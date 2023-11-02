@@ -8,6 +8,7 @@ public class BoardManager : MonoBehaviour
 {
     public static BoardManager Instance;
     [SerializeField] Tilemap gameBoard;
+    [SerializeField] GameObject CardsParent;
 
     public Dictionary<Vector2Int, string> CardLookup;
     public Dictionary<Vector2Int, string> BloodTiles;
@@ -69,28 +70,25 @@ public class BoardManager : MonoBehaviour
 
     public bool TryPlaceCard(Vector3 mousePos, GameObject cardToPlace)
     {
-        var attemptedCoords = gameBoard.WorldToCell(mousePos);
-        var Coords2D = (Vector2Int)attemptedCoords;
-        Debug.Log(attemptedCoords);
-
-        if (CardLookup.ContainsKey(Coords2D))
-        {
-            return false;
-        }
-
+        var Coords2D = GetNearestTile(mousePos);
         if (IsPlacementValid(Coords2D))
         {
             Debug.Log("PLACABLE");
-            var placementPosition = gameBoard.GetCellCenterWorld(attemptedCoords);
-            Instantiate(NewCardPrefab, placementPosition, Quaternion.identity, transform);
+            var placementPosition = GetCellCenter(Coords2D);
+            Instantiate(NewCardPrefab, placementPosition, Quaternion.identity, CardsParent.transform);
             PlaceCard(Coords2D, "New Card");
             return true;
         }
         return false;
     }
 
-    private bool IsPlacementValid(Vector2Int placementPosition)
+    public bool IsPlacementValid(Vector2Int placementPosition)
     {
+        if (CardLookup.ContainsKey(placementPosition))
+        {
+            return false;
+        }
+
         foreach (var item in AdjacencyLookup)
         {
             if (CardLookup.ContainsKey(placementPosition + item))
@@ -99,5 +97,32 @@ public class BoardManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public IEnumerator CleanUpCards()
+    {
+        Debug.Log("CLEAN");
+
+        while (CardsParent.transform.childCount > 0)
+        {
+            Destroy(CardsParent.transform.GetChild(0).gameObject);
+            AudioManager.Instance.PlaySound(SoundFX.CARD_BURN);
+            yield return new WaitForSeconds(0.25f);      
+        }
+        
+        CardLookup.Clear();
+        CardLookup.Add(DeckPosition, "Deck");
+    }
+
+    public Vector3 GetCellCenter(Vector2Int cellPos)
+    {
+        return gameBoard.GetCellCenterWorld((Vector3Int)cellPos);
+    }    
+
+    public Vector2Int GetNearestTile(Vector3 mousePos)
+    {
+        var attemptedCoords = gameBoard.WorldToCell(mousePos);
+        var Coords2D = (Vector2Int)attemptedCoords;
+        return Coords2D;
     }
 }

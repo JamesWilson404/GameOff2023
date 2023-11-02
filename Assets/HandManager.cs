@@ -7,6 +7,8 @@ public class HandManager : MonoBehaviour
 {
     [SerializeField] Camera gameCamera;
 
+    [SerializeField] GameObject HandCardPrefab;
+
     public static HandManager Instance;
     GameObject CurrentCard;
 
@@ -46,6 +48,27 @@ public class HandManager : MonoBehaviour
             handRotator.SetHandRotation();
         }
     }
+
+    internal void DrawHand()
+    {
+
+
+
+        StartCoroutine(DrawHandCoroutine());
+    }
+
+    public IEnumerator DrawHandCoroutine()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            yield return new WaitForSeconds(0.2f);
+            Instantiate(HandCardPrefab, this.transform);
+            AudioManager.Instance.PlaySound(SoundFX.CARD_DRAWN);
+            layerSorter.ResolveCardOrdering();
+            handRotator.SetHandRotation();
+        }
+    }
+
 
     internal void CardHovered(Canvas cardCanvas)
     {
@@ -97,6 +120,13 @@ public class HandManager : MonoBehaviour
 
         if (Placing)
         {
+            var nearestTilePos = BoardManager.Instance.GetNearestTile(mousePosition);
+            if (BoardManager.Instance.IsPlacementValid(nearestTilePos))
+            {
+                mousePosition = BoardManager.Instance.GetCellCenter(nearestTilePos);
+            }
+
+
             UpdatePlacementCard(mousePosition);
             if (Input.GetMouseButtonUp(0))
             {
@@ -104,7 +134,13 @@ public class HandManager : MonoBehaviour
                 PlacementCard.SetActive(false);
                 HandGroup.alpha = 1;
                 ReturnGroup.alpha = 0;
-                BoardManager.Instance.TryPlaceCard(mousePosition, CardToPlace);
+                if (BoardManager.Instance.TryPlaceCard(mousePosition, CardToPlace))
+                {
+                    Destroy(CardToPlace.gameObject);
+                    layerSorter.ResolveCardOrdering();
+                    handRotator.SetHandRotation();
+                }
+
                 CardToPlace = null;
             }
         }
@@ -118,6 +154,7 @@ public class HandManager : MonoBehaviour
                     UpdatePlacementCard(mousePosition);
                     HandGroup.alpha = 0;
                     ReturnGroup.alpha = 1;
+                    CardToPlace = CurrentCard;
                 }
             }
         }
