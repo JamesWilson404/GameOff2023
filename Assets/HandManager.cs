@@ -5,11 +5,20 @@ using UnityEngine;
 
 public class HandManager : MonoBehaviour
 {
+    [SerializeField] Camera gameCamera;
+
     public static HandManager Instance;
     GameObject CurrentCard;
 
     HandRotator handRotator;
     CardLayerSorter layerSorter;
+
+    public GameObject PlacementCard;
+    public GameObject CardToPlace;
+    bool Placing = false;
+
+    [SerializeField] CanvasGroup HandGroup;
+    [SerializeField] CanvasGroup ReturnGroup;
 
     private void Awake()
     {
@@ -80,17 +89,44 @@ public class HandManager : MonoBehaviour
     }
 
 
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
-        
+        var mousePosition = gameCamera.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = 0;
+
+        if (Placing)
+        {
+            UpdatePlacementCard(mousePosition);
+            if (Input.GetMouseButtonUp(0))
+            {
+                Placing = false;
+                PlacementCard.SetActive(false);
+                HandGroup.alpha = 1;
+                ReturnGroup.alpha = 0;
+                BoardManager.Instance.TryPlaceCard(mousePosition, CardToPlace);
+                CardToPlace = null;
+            }
+        }
+        else
+        {
+            if (CurrentCard != null)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Placing = true;
+                    UpdatePlacementCard(mousePosition);
+                    HandGroup.alpha = 0;
+                    ReturnGroup.alpha = 1;
+                }
+            }
+        }
+    }
+
+    private void UpdatePlacementCard(Vector3 mousePos)
+    {
+        PlacementCard.SetActive(true);
+
+        PlacementCard.transform.position = mousePos;
     }
 }
