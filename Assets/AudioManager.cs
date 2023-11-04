@@ -7,12 +7,14 @@ public enum SoundFX
 {
     CARD_DRAWN,
     CARD_BURN,
+    BLOOD_SPLAT,
 }
 
 public class AudioManager : MonoBehaviour
 {
     public AudioClip CardDrawm;
     public AudioClip CardBurn;
+    public AudioClip BloodSplat;
 
 
 
@@ -35,6 +37,10 @@ public class AudioManager : MonoBehaviour
 
             case SoundFX.CARD_BURN:
                 source.PlayOneShot(CardBurn);
+                break;
+
+            case SoundFX.BLOOD_SPLAT:
+                source.PlayOneShot(BloodSplat);
                 break;
 
             default:

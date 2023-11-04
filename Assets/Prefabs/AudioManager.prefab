@@ -143,3 +143,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardDrawm: {fileID: 8300000, guid: aec8c5a44cb467f4da5aa142e7506e2a, type: 3}
   CardBurn: {fileID: 8300000, guid: 8c1db12d26580694e86a872e5e051ae7, type: 3}
+  BloodSplat: {fileID: 8300000, guid: fc42f7ed614a9784bab26ad3eec6737b, type: 3}

@@ -9,6 +9,10 @@ public class UICard : MonoBehaviour
     AudioSource AudioPlayer;
     [SerializeField] AudioClip Audio_CardPlacement;
 
+    public bool RequiresBloodTrail;
+    [SerializeField] GameObject BloodTrailPrefab;
+    public int NumberOfTrails;
+
     public SpriteRenderer spriteRenderer;
 
     public Card CurrentCard;
@@ -29,4 +33,18 @@ public class UICard : MonoBehaviour
         CurrentCard = newCard;
         spriteRenderer.sprite = newCard.CardArt;
     }
+
+    public void TrySpawnBloodTrail()
+    {
+        if (RequiresBloodTrail)
+        {
+            for (int i = 0; i < NumberOfTrails; i++)
+            {
+                var newBloodTrail = Instantiate(BloodTrailPrefab, transform.position, Quaternion.identity, BoardManager.Instance.BloodParent.transform);
+                newBloodTrail.GetComponent<BloodTrail>().Init();
+            }
+            AudioManager.Instance.PlaySound(SoundFX.BLOOD_SPLAT);
+        }
+    }    
+
 }

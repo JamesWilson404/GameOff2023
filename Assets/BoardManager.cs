@@ -9,9 +9,10 @@ public class BoardManager : MonoBehaviour
     public static BoardManager Instance;
     [SerializeField] Tilemap gameBoard;
     [SerializeField] GameObject CardsParent;
+    public GameObject BloodParent;
 
-    public Dictionary<Vector2Int, string> CardLookup;
-    public Dictionary<Vector2Int, string> BloodTiles;
+    public Dictionary<Vector2Int, UICard> CardLookup;
+    public Dictionary<Vector2Int, UICard> BloodTiles;
 
     public GameObject NewCardPrefab;
 
@@ -37,8 +38,8 @@ public class BoardManager : MonoBehaviour
             return;
         }
 
-        CardLookup = new Dictionary<Vector2Int, string>();
-        BloodTiles = new Dictionary<Vector2Int, string>();
+        CardLookup = new Dictionary<Vector2Int, UICard>();
+        BloodTiles = new Dictionary<Vector2Int, UICard>();
         FindStartingDeck();
 
     }
@@ -51,7 +52,7 @@ public class BoardManager : MonoBehaviour
             if (gameBoard.HasTile(localPlace))
             {
                 DeckPosition = (Vector2Int)localPlace;
-                PlaceCard(DeckPosition, "Deck");
+                PlaceCard(DeckPosition, null);
                 Debug.Log("Deck Found: X: " + localPlace.x.ToString() + " Y: " + localPlace.y.ToString());
             }
         }
@@ -63,12 +64,13 @@ public class BoardManager : MonoBehaviour
         gameBoard.RefreshTile( (Vector3Int) DeckPosition) ;
     }
 
-    public void PlaceCard(Vector2Int position, string card)
+    public void PlaceCard(Vector2Int position, UICard card)
     {
-        if (!BloodTiles.ContainsKey(position))
+        if (!BloodTiles.ContainsKey(position) && card != null)
         {
             //  New Blood Tile
             BloodTiles.Add(position, card);
+            card.RequiresBloodTrail = true;
         }
         CardLookup.Add(position, card);
     }
@@ -81,8 +83,9 @@ public class BoardManager : MonoBehaviour
             Debug.Log("PLACABLE");
             var placementPosition = GetCellCenter(Coords2D);
             var newCard = Instantiate(NewCardPrefab, placementPosition, Quaternion.identity, CardsParent.transform);
-            newCard.GetComponent<UICard>().Init(cardToPlace.GetComponent<UIHandCard>().CurrentCard);
-            PlaceCard(Coords2D, "New UICard");
+            var uiCard = newCard.GetComponent<UICard>();
+            uiCard.Init(cardToPlace.GetComponent<UIHandCard>().CurrentCard);
+            PlaceCard(Coords2D, uiCard);
             return true;
         }
         return false;
@@ -119,7 +122,7 @@ public class BoardManager : MonoBehaviour
         }
         
         CardLookup.Clear();
-        CardLookup.Add(DeckPosition, "Deck");
+        CardLookup.Add(DeckPosition, null);
     }
 
     public Vector3 GetCellCenter(Vector2Int cellPos)
