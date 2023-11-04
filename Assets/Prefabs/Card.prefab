@@ -154,6 +154,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Audio_CardPlacement: {fileID: 8300000, guid: aec8c5a44cb467f4da5aa142e7506e2a, type: 3}
+  spriteRenderer: {fileID: 3497940123699463445}
+  CurrentCard: {fileID: 0}
 --- !u!82 &3545828776614425257
 AudioSource:
   m_ObjectHideFlags: 0

@@ -59,13 +59,25 @@ public class HandManager : MonoBehaviour
 
     public IEnumerator DrawHandCoroutine()
     {
-        for (int i = 0; i < 5; i++)
+        int cardsToDraw = 5;
+        while (cardsToDraw > 0)
         {
             yield return new WaitForSeconds(0.2f);
-            Instantiate(HandCardPrefab, this.transform);
-            AudioManager.Instance.PlaySound(SoundFX.CARD_DRAWN);
-            layerSorter.ResolveCardOrdering();
-            handRotator.SetHandRotation();
+            Card nextCard = DeckManager.Instance.DrawCard();
+            if (nextCard != null)
+            {
+                var newCard = Instantiate(HandCardPrefab, this.transform);
+                newCard.GetComponent<UIHandCard>().Init(nextCard);
+                AudioManager.Instance.PlaySound(SoundFX.CARD_DRAWN);
+                layerSorter.ResolveCardOrdering();
+                handRotator.SetHandRotation();
+                cardsToDraw--;
+            }
+            else
+            {
+                // Shuffle Required
+                DeckManager.Instance.ReshuffleDeck();
+            }
         }
     }
 

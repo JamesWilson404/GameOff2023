@@ -57,6 +57,11 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    internal void SetDeckImage(Tile tile)
+    {
+        gameBoard.SetTile((Vector3Int)DeckPosition, tile);
+        gameBoard.RefreshTile( (Vector3Int) DeckPosition) ;
+    }
 
     public void PlaceCard(Vector2Int position, string card)
     {
@@ -75,8 +80,9 @@ public class BoardManager : MonoBehaviour
         {
             Debug.Log("PLACABLE");
             var placementPosition = GetCellCenter(Coords2D);
-            Instantiate(NewCardPrefab, placementPosition, Quaternion.identity, CardsParent.transform);
-            PlaceCard(Coords2D, "New Card");
+            var newCard = Instantiate(NewCardPrefab, placementPosition, Quaternion.identity, CardsParent.transform);
+            newCard.GetComponent<UICard>().Init(cardToPlace.GetComponent<UIHandCard>().CurrentCard);
+            PlaceCard(Coords2D, "New UICard");
             return true;
         }
         return false;
@@ -105,7 +111,9 @@ public class BoardManager : MonoBehaviour
 
         while (CardsParent.transform.childCount > 0)
         {
-            Destroy(CardsParent.transform.GetChild(0).gameObject);
+            var card = CardsParent.transform.GetChild(0);
+            DeckManager.Instance.AddToDiscard(card.GetComponent<UICard>().CurrentCard);
+            Destroy(card.gameObject);
             AudioManager.Instance.PlaySound(SoundFX.CARD_BURN);
             yield return new WaitForSeconds(0.25f);      
         }

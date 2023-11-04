@@ -1,11 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class Card : MonoBehaviour
+public class UICard : MonoBehaviour
 {
     AudioSource AudioPlayer;
     [SerializeField] AudioClip Audio_CardPlacement;
+
+    public SpriteRenderer spriteRenderer;
+
+    public Card CurrentCard;
 
     private void Awake()
     {
@@ -18,4 +24,9 @@ public class Card : MonoBehaviour
         AudioPlayer.PlayOneShot(Audio_CardPlacement);
     }
 
+    internal void Init(Card newCard)
+    {
+        CurrentCard = newCard;
+        spriteRenderer.sprite = newCard.CardArt;
+    }
 }

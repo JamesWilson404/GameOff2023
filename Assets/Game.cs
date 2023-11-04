@@ -19,6 +19,10 @@ public class Game : MonoBehaviour
     [HideInInspector] public float TimeInState = 0;
     public eTurnState TurnState = eTurnState.PreStart;
 
+    public System.Random rand;
+
+
+
     bool changedState;
 
     private void Awake()
@@ -32,6 +36,9 @@ public class Game : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
+
+        rand = new System.Random((int) DateTime.Now.TimeOfDay.TotalSeconds);
+
     }
 
     private void Update()
