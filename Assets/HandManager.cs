@@ -22,6 +22,8 @@ public class HandManager : MonoBehaviour
     [SerializeField] CanvasGroup HandGroup;
     [SerializeField] CanvasGroup ReturnGroup;
 
+    public int HandCount = 0;
+
     private void Awake()
     {
         if (Instance == null)
@@ -129,6 +131,10 @@ public class HandManager : MonoBehaviour
     {
         var mousePosition = gameCamera.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
+        if (Game.Instance.TurnState == Game.eTurnState.InTurn)
+        {
+            UpdateHandCount();
+        }
 
         if (Placing)
         {
@@ -150,7 +156,7 @@ public class HandManager : MonoBehaviour
                 {
                     Destroy(CardToPlace.gameObject);
                     layerSorter.ResolveCardOrdering();
-                    handRotator.SetHandRotation();
+                    handRotator.SetHandRotation();                    
                 }
 
                 CardToPlace = null;
@@ -169,6 +175,15 @@ public class HandManager : MonoBehaviour
                     CardToPlace = CurrentCard;
                 }
             }
+        }
+    }
+
+    private void UpdateHandCount()
+    {
+        HandCount = transform.childCount;
+        if (HandCount == 0)
+        {
+            Game.Instance.UIEndTurnPressed();
         }
     }
 

@@ -9,12 +9,14 @@ public class BoardManager : MonoBehaviour
     public static BoardManager Instance;
     [SerializeField] Tilemap gameBoard;
     [SerializeField] GameObject CardsParent;
+    [SerializeField] GameObject ShopParent;
     public GameObject BloodParent;
 
     public Dictionary<Vector2Int, UICard> CardLookup;
     public Dictionary<Vector2Int, UICard> BloodTiles;
 
     public GameObject NewCardPrefab;
+    public GameObject ShopCardPrefab;
 
     Vector2Int DeckPosition;
     [SerializeField] Vector2Int[] AdjacencyLookup = new Vector2Int[]
@@ -91,6 +93,39 @@ public class BoardManager : MonoBehaviour
         return false;
     }
 
+    internal IEnumerator PresentShop()
+    {
+
+        Game.Instance.GameUI.LoadEventUI(eEventType.Shop);
+        yield return new WaitForSeconds(1f);
+        for (int i = -2; i < 3; i++)
+        {
+            if (i == 0)
+            {
+                i++;
+            }
+
+            var placementPosition = GetCellCenter(DeckPosition + new Vector2Int(i, 0));
+            var newShopCard = Instantiate(ShopCardPrefab, placementPosition, Quaternion.identity, ShopParent.transform);
+            yield return new WaitForSeconds(0.2f);
+
+        }
+    }
+
+    public void FinishEvent()
+    {
+        StartCoroutine(CleanUpShopCards());
+        Game.Instance.FinishEvent();
+    }
+
+    public IEnumerator AwardBloodTokens()
+    {
+        yield return new WaitForSeconds(2f);
+
+        Game.Instance.BloodTokens += BloodTiles.Count;
+
+    }
+
     public bool IsPlacementValid(Vector2Int placementPosition)
     {
         if (CardLookup.ContainsKey(placementPosition))
@@ -111,6 +146,10 @@ public class BoardManager : MonoBehaviour
     public IEnumerator CleanUpCards()
     {
         Debug.Log("CLEAN");
+        if (CardsParent.transform.childCount == 0)
+        {
+            yield return null;
+        }
 
         while (CardsParent.transform.childCount > 0)
         {
@@ -123,6 +162,23 @@ public class BoardManager : MonoBehaviour
         
         CardLookup.Clear();
         CardLookup.Add(DeckPosition, null);
+    }
+
+    public IEnumerator CleanUpShopCards()
+    {
+        Debug.Log("CLEAN");
+        if (ShopParent.transform.childCount == 0)
+        {
+            yield return null;
+        }
+
+        while (ShopParent.transform.childCount > 0)
+        {
+            var card = ShopParent.transform.GetChild(0);
+            Destroy(card.gameObject);
+            AudioManager.Instance.PlaySound(SoundFX.CARD_BURN);
+            yield return new WaitForSeconds(0.25f);
+        }
     }
 
     public Vector3 GetCellCenter(Vector2Int cellPos)
