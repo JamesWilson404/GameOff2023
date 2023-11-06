@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardName: Agony
   CardDescription: Nightmare +5
+  cost: 5
+  polarity: 0
   CardArt: {fileID: 21300000, guid: 3e9777760e204124f9e6ab3424437d9c, type: 3}

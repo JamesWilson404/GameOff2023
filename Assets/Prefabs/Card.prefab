@@ -94,8 +94,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1693859508477224024}
   - component: {fileID: 6503590285898418672}
-  - component: {fileID: 6096308134949642077}
   - component: {fileID: 3545828776614425257}
+  - component: {fileID: 5458462694307803943}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -142,24 +142,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6096308134949642077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4233017779461347965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0f181107e90c024d9fe9d442fdb1f85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Audio_CardPlacement: {fileID: 8300000, guid: aec8c5a44cb467f4da5aa142e7506e2a, type: 3}
-  RequiresBloodTrail: 0
-  BloodTrailPrefab: {fileID: 3809928361793399407, guid: 25c1303ec0cdff74aa89f696f4df6a5d, type: 3}
-  NumberOfTrails: 20
-  spriteRenderer: {fileID: 3497940123699463445}
-  CurrentCard: {fileID: 0}
 --- !u!82 &3545828776614425257
 AudioSource:
   m_ObjectHideFlags: 0
@@ -256,6 +238,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5458462694307803943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4233017779461347965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26e68694992375d4fbf76881329d041d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Audio_CardPlacement: {fileID: 8300000, guid: aec8c5a44cb467f4da5aa142e7506e2a, type: 3}
+  spriteRenderer: {fileID: 3497940123699463445}
+  CurrentCard: {fileID: 0}
+  RequiresBloodTrail: 0
+  BloodTrailPrefab: {fileID: 3809928361793399407, guid: 25c1303ec0cdff74aa89f696f4df6a5d, type: 3}
+  NumberOfTrails: 20
 --- !u!1 &5898470743480126615
 GameObject:
   m_ObjectHideFlags: 0

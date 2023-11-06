@@ -1204,6 +1204,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1329,6 +1330,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56666c5a40171f54783dd416a44f42bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1 &579075277
 GameObject:
   m_ObjectHideFlags: 0
@@ -2621,6 +2638,7 @@ MonoBehaviour:
   BloodParent: {fileID: 1970738761}
   NewCardPrefab: {fileID: 4233017779461347965, guid: e4c1e9ed5c74b75459f59761d6f1a5fb, type: 3}
   ShopCardPrefab: {fileID: 4233017779461347965, guid: b04315b64d1a16243be5b3a5b2739585, type: 3}
+  debugCard: {fileID: 11400000, guid: a50d27901adf0aa42b97428a8f4b2eb6, type: 2}
   AdjacencyLookup:
   - {x: 1, y: 0}
   - {x: -1, y: 0}
@@ -4465,6 +4483,54 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1765296550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1765296552}
+  - component: {fileID: 1765296551}
+  m_Layer: 0
+  m_Name: EventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1765296551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765296550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f44dc1e2e6e79df47ab2181e54acb252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentCard: {fileID: 0}
+  GameCamera: {fileID: 519420031}
+  Dragging: 0
+  returnPosition: {x: 0, y: 0, z: 0}
+--- !u!4 &1765296552
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765296550}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.8587187, y: 0.14972094, z: -0.03716565}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1774553365
 GameObject:
   m_ObjectHideFlags: 0
@@ -5417,3 +5483,4 @@ SceneRoots:
   - {fileID: 1859557737}
   - {fileID: 5835468470337706693}
   - {fileID: 1970738762}
+  - {fileID: 1765296552}

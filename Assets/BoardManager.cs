@@ -18,6 +18,8 @@ public class BoardManager : MonoBehaviour
     public GameObject NewCardPrefab;
     public GameObject ShopCardPrefab;
 
+    public Card debugCard;
+
     Vector2Int DeckPosition;
     [SerializeField] Vector2Int[] AdjacencyLookup = new Vector2Int[]
     {
@@ -66,7 +68,7 @@ public class BoardManager : MonoBehaviour
         gameBoard.RefreshTile( (Vector3Int) DeckPosition) ;
     }
 
-    public void PlaceCard(Vector2Int position, UICard card)
+    public void PlaceCard(Vector2Int position, UIGameCard card)
     {
         if (!BloodTiles.ContainsKey(position) && card != null)
         {
@@ -77,6 +79,11 @@ public class BoardManager : MonoBehaviour
         CardLookup.Add(position, card);
     }
 
+    internal bool IsDeckPosition(Vector2Int coords2D)
+    {
+        return coords2D == DeckPosition;
+    }
+
     public bool TryPlaceCard(Vector3 mousePos, GameObject cardToPlace)
     {
         var Coords2D = GetNearestTile(mousePos);
@@ -85,7 +92,7 @@ public class BoardManager : MonoBehaviour
             Debug.Log("PLACABLE");
             var placementPosition = GetCellCenter(Coords2D);
             var newCard = Instantiate(NewCardPrefab, placementPosition, Quaternion.identity, CardsParent.transform);
-            var uiCard = newCard.GetComponent<UICard>();
+            var uiCard = newCard.GetComponent<UIGameCard>();
             uiCard.Init(cardToPlace.GetComponent<UIHandCard>().CurrentCard);
             PlaceCard(Coords2D, uiCard);
             return true;
@@ -107,6 +114,7 @@ public class BoardManager : MonoBehaviour
 
             var placementPosition = GetCellCenter(DeckPosition + new Vector2Int(i, 0));
             var newShopCard = Instantiate(ShopCardPrefab, placementPosition, Quaternion.identity, ShopParent.transform);
+            newShopCard.GetComponent<UIEventCard>().Init(debugCard);
             yield return new WaitForSeconds(0.2f);
 
         }

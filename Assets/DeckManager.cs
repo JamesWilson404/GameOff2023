@@ -91,4 +91,10 @@ public class DeckManager : MonoBehaviour
         DiscardPile.Clear();
         UpdateDeckUI();
     }
+
+    internal void AddCardToDeck(Card currentCard)
+    {
+        Deck.Add(currentCard);
+        UpdateDeckUI();
+    }
 }
