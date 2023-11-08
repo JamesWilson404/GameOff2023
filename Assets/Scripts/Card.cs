@@ -12,6 +12,7 @@ public enum eCardPolarity
 
 public abstract class Card : ScriptableObject
 {
+    [Header("Card Info")]
     public string CardName;
     public string CardDescription;
 

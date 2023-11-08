@@ -20,7 +20,7 @@ public class UIEventCard : UICard, IPointerEnterHandler, IPointerExitHandler
     public Sprite HopeIcon;
     public Sprite BloodIcon;
 
-    internal override void Init(Card newCard)
+    public override void Init(Card newCard)
     {
         CurrentCard = newCard;
         spriteRenderer.sprite = newCard.CardArt;
@@ -54,14 +54,14 @@ public class UIEventCard : UICard, IPointerEnterHandler, IPointerExitHandler
         CardShadow.sortingLayerName = "Default";
         CardBacking.sortingLayerName = "Default";
         CardSprite.sortingLayerName = "Default";
-        canvasGroup.alpha = 1;
+        canvasGroup.gameObject.SetActive(true);
     }
 
     internal void StartDragging()
     {
-        canvasGroup.alpha = 0;
         CardShadow.sortingLayerName = "GameUI";
         CardBacking.sortingLayerName = "GameUI";
         CardSprite.sortingLayerName = "GameUI";
+        canvasGroup.gameObject.SetActive(false);
     }
 }

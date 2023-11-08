@@ -8,6 +8,13 @@ public enum SoundFX
     CARD_DRAWN,
     CARD_BURN,
     BLOOD_SPLAT,
+    CANT_AFFORD,
+    GHOUL,
+    HOPE,
+    NIGHTMARE,
+    BlOOD_DRIP,
+    BOOP,
+    BONE_SNAP,
 }
 
 public class AudioManager : MonoBehaviour
@@ -15,7 +22,13 @@ public class AudioManager : MonoBehaviour
     public AudioClip CardDrawm;
     public AudioClip CardBurn;
     public AudioClip BloodSplat;
-
+    public AudioClip CantAfford;
+    public AudioClip Ghoul;
+    public AudioClip Nightmare;
+    public AudioClip Hope;
+    public AudioClip BloodDrip;
+    public AudioClip Boop;
+    public AudioClip BoneSnap;
 
 
     private AudioSource source;
@@ -42,6 +55,35 @@ public class AudioManager : MonoBehaviour
             case SoundFX.BLOOD_SPLAT:
                 source.PlayOneShot(BloodSplat);
                 break;
+
+            case SoundFX.CANT_AFFORD:
+                source.PlayOneShot(CantAfford);
+                break;
+
+            case SoundFX.GHOUL:
+                source.PlayOneShot(Ghoul);
+                break;
+
+            case SoundFX.HOPE:
+                source.PlayOneShot(Hope);
+                break;
+
+            case SoundFX.NIGHTMARE:
+                source.PlayOneShot(Nightmare);
+                break;
+
+            case SoundFX.BOOP:
+                source.PlayOneShot(Boop);
+                break;
+
+            case SoundFX.BONE_SNAP:
+                source.PlayOneShot(BoneSnap);
+                break;
+
+            case SoundFX.BlOOD_DRIP:
+                source.PlayOneShot(BloodDrip);
+                break;
+
 
             default:
                 break;

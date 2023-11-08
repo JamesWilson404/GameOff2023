@@ -38,7 +38,6 @@ public class EventManager : MonoBehaviour
         else
         {
             CurrentCard = cardHovered;
-            Debug.Log("NEW HOVER");
         }
     }
 
@@ -47,7 +46,6 @@ public class EventManager : MonoBehaviour
         if (CurrentCard == cardHovered && !Dragging)
         {
             CurrentCard = null;
-            Debug.Log("UN HOVER");
         }
     }
 
@@ -117,7 +115,7 @@ public class EventManager : MonoBehaviour
 
     private bool TryPurchaseCard()
     {
-        if (true)
+        if (Game.Instance.TryPurchase(CurrentCard.CurrentCard.polarity, CurrentCard.CurrentCard.cost))
         {
             DeckManager.Instance.AddCardToDeck(CurrentCard.CurrentCard);
             Destroy(CurrentCard.gameObject);

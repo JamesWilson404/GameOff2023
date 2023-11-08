@@ -20,8 +20,12 @@ public class GameUI : MonoBehaviour
     [SerializeField] TMP_Text BloodTokenText;
     [SerializeField] TMP_Text HopeTokenText;
 
+    [SerializeField] GameObject BloodTarget;
+
     [SerializeField] Animator animator;
 
+    [SerializeField] BloodUITrail BloodTrail;
+    [SerializeField] Camera Camera;
 
     private void Awake()
     {
@@ -39,6 +43,11 @@ public class GameUI : MonoBehaviour
     void Update()
     {
         UpdateUI();
+    }
+
+    public void StartTrail()
+    {
+        BloodTrail.StartPath(BoardManager.Instance.GetCellCenter(BoardManager.Instance.DeckPosition), BloodTarget.transform.position);
     }
 
     public void UpdateUI()
@@ -77,4 +86,36 @@ public class GameUI : MonoBehaviour
         animator.SetBool("BadCard", false);
         animator.SetBool("GoodCard", false);
     }
+
+
+    public void NotEnoughResources(eCardPolarity polarity)
+    {
+        if (polarity == eCardPolarity.Hope)
+        {
+            animator.Play("HopeJiggle");
+        }
+        else if (polarity == eCardPolarity.Blood)
+        {
+            animator.Play("NightmareJiggle");
+        }
+        AudioManager.Instance.PlaySound(SoundFX.CANT_AFFORD);
+    }
+
+
+    public void ResourcesAdded(eCardPolarity polarity, int amount)
+    {
+        if (polarity == eCardPolarity.Hope)
+        {
+            animator.Play("HopeAdded");
+        }
+        else if (polarity == eCardPolarity.Blood)
+        {
+            animator.Play("NightmareAdded");
+        }
+    
+    }
+
+
+
+
 }

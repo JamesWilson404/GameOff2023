@@ -10,7 +10,6 @@ public class UIGameCard : UICard
     [SerializeField] GameObject BloodTrailPrefab;
     public int NumberOfTrails;
 
-
     public void TrySpawnBloodTrail()
     {
         if (RequiresBloodTrail)
@@ -24,4 +23,8 @@ public class UIGameCard : UICard
         }
     }
 
+    public void Placed()
+    {
+        CurrentCard.OnPlace();
+    }
 }

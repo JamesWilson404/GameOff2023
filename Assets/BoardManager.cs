@@ -20,7 +20,7 @@ public class BoardManager : MonoBehaviour
 
     public Card debugCard;
 
-    Vector2Int DeckPosition;
+    public Vector2Int DeckPosition;
     [SerializeField] Vector2Int[] AdjacencyLookup = new Vector2Int[]
     {
         new Vector2Int(1, 0),
@@ -128,10 +128,9 @@ public class BoardManager : MonoBehaviour
 
     public IEnumerator AwardBloodTokens()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds((BoardManager.Instance.CardLookup.Count + 2) * 0.2f);
 
-        Game.Instance.BloodTokens += BloodTiles.Count;
-
+        Game.Instance.GameUI.StartTrail();
     }
 
     public bool IsPlacementValid(Vector2Int placementPosition)
@@ -165,7 +164,7 @@ public class BoardManager : MonoBehaviour
             DeckManager.Instance.AddToDiscard(card.GetComponent<UICard>().CurrentCard);
             Destroy(card.gameObject);
             AudioManager.Instance.PlaySound(SoundFX.CARD_BURN);
-            yield return new WaitForSeconds(0.25f);      
+            yield return new WaitForSeconds(0.2f);      
         }
         
         CardLookup.Clear();

@@ -14,7 +14,7 @@ public abstract class UICard : MonoBehaviour
     public Card CurrentCard;
 
 
-    internal virtual void Init(Card newCard)
+    public virtual void Init(Card newCard)
     {
         CurrentCard = newCard;
         spriteRenderer.sprite = newCard.CardArt;

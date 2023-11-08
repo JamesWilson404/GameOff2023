@@ -144,3 +144,10 @@ MonoBehaviour:
   CardDrawm: {fileID: 8300000, guid: aec8c5a44cb467f4da5aa142e7506e2a, type: 3}
   CardBurn: {fileID: 8300000, guid: 8c1db12d26580694e86a872e5e051ae7, type: 3}
   BloodSplat: {fileID: 8300000, guid: fc42f7ed614a9784bab26ad3eec6737b, type: 3}
+  CantAfford: {fileID: 8300000, guid: 800fd261ceb1ef6419aaf1f871dea2fd, type: 3}
+  Ghoul: {fileID: 8300000, guid: 8baf6cde35201c84d95e9d237446ef69, type: 3}
+  Nightmare: {fileID: 8300000, guid: 8baf6cde35201c84d95e9d237446ef69, type: 3}
+  Hope: {fileID: 8300000, guid: 262ac96ed07285d4fa46a31ae3f9b0bc, type: 3}
+  BloodDrip: {fileID: 8300000, guid: eb4de18c42ee1e740b3fb3042788f9a3, type: 3}
+  Boop: {fileID: 8300000, guid: 9edd92492dbd7484caac78f08d132452, type: 3}
+  BoneSnap: {fileID: 8300000, guid: dcff6b7e4fd5245459c105712c4654d4, type: 3}

@@ -59,7 +59,21 @@ public class Game : MonoBehaviour
         GameUI.UpdateUI();
     }
 
+    public void AwardResource(eCardPolarity polarity, int value)
+    {
+        if (polarity == eCardPolarity.Hope)
+        {
+            HopeTokens += value;
+            AudioManager.Instance.PlaySound(SoundFX.BOOP);
+        }
+        else if (polarity == eCardPolarity.Blood)
+        {
+            BloodTokens += value;
+            AudioManager.Instance.PlaySound(SoundFX.BlOOD_DRIP);
+        }
 
+        GameUI.ResourcesAdded(polarity, value);
+    }
 
     private void ResolveTurnState()
     {
@@ -131,7 +145,7 @@ public class Game : MonoBehaviour
                 if (TimeInState == 0)
                 {
                 }
-                if (TimeInState > 1f)
+                if (TimeInState > 2f)
                 {
                     StartCoroutine(BoardManager.Instance.PresentShop());
                     SwitchToState(eTurnState.InEvent);
@@ -151,6 +165,39 @@ public class Game : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    internal bool TryPurchase(eCardPolarity polarity, int cost)
+    {
+        if (polarity == eCardPolarity.Hope)
+        {
+            if (HopeTokens >= cost)
+            {
+                HopeTokens -= cost;
+                GameUI.UpdateUI();
+                return true;
+            }
+            else
+            {
+                GameUI.NotEnoughResources(polarity);
+                return false;
+            }
+        }
+        else if (polarity == eCardPolarity.Blood)
+        {
+            if (BloodTokens >= cost)
+            {
+                BloodTokens -= cost;
+                GameUI.UpdateUI();
+                return true;
+            }
+            else
+            {
+                GameUI.NotEnoughResources(polarity);
+                return false;
+            }
+        }
+        return false;
     }
 
     void SwitchToState(eTurnState newState)
