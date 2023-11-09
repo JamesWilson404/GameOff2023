@@ -27,6 +27,8 @@ public class GameUI : MonoBehaviour
     [SerializeField] BloodUITrail BloodTrail;
     [SerializeField] Camera Camera;
 
+
+
     private void Awake()
     {
         animator = GetComponent<Animator>();   

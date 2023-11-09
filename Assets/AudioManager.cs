@@ -15,6 +15,8 @@ public enum SoundFX
     BlOOD_DRIP,
     BOOP,
     BONE_SNAP,
+    BELL,
+    WRITING,
 }
 
 public class AudioManager : MonoBehaviour
@@ -29,6 +31,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip BloodDrip;
     public AudioClip Boop;
     public AudioClip BoneSnap;
+    public AudioClip Bell;
+    public AudioClip Writting;
+    
 
 
     private AudioSource source;
@@ -84,6 +89,13 @@ public class AudioManager : MonoBehaviour
                 source.PlayOneShot(BloodDrip);
                 break;
 
+            case SoundFX.BELL:
+                source.PlayOneShot(Bell);
+                break;
+
+            case SoundFX.WRITING:
+                source.PlayOneShot(Writting);
+                break;
 
             default:
                 break;

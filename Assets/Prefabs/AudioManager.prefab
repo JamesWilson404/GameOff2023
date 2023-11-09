@@ -151,3 +151,5 @@ MonoBehaviour:
   BloodDrip: {fileID: 8300000, guid: eb4de18c42ee1e740b3fb3042788f9a3, type: 3}
   Boop: {fileID: 8300000, guid: 9edd92492dbd7484caac78f08d132452, type: 3}
   BoneSnap: {fileID: 8300000, guid: dcff6b7e4fd5245459c105712c4654d4, type: 3}
+  Bell: {fileID: 8300000, guid: 0804e35cd9e52e3478fb6c17ab3044c4, type: 3}
+  Writting: {fileID: 8300000, guid: 5833833333233894084e8edb2a0c3609, type: 3}

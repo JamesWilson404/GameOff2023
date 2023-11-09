@@ -18,6 +18,7 @@ public class Game : MonoBehaviour
         PreEvent,
         InEvent,
         PostEvent,
+        PresentStory,
     }
 
     [HideInInspector] public float TimeInState = 0;
@@ -29,8 +30,17 @@ public class Game : MonoBehaviour
     public int HopeTokens;
 
     public GameUI GameUI;
+    public StoryCard StoryCard;
 
     bool changedState;
+    bool StartOfPhase = true;
+
+    public Camera GameCamera;
+    public Camera BloodCamera;
+
+    float ZoomLevel = 3;
+    float ZoomLerpRate = 0.1f; 
+
 
     private void Awake()
     {
@@ -57,6 +67,14 @@ public class Game : MonoBehaviour
         changedState = false;
         ResolveTurnState();
         GameUI.UpdateUI();
+        ResolveCameraZoom();
+    }
+
+    private void ResolveCameraZoom()
+    {
+        var newZoom = Mathf.Lerp(GameCamera.orthographicSize, ZoomLevel, ZoomLerpRate);
+        GameCamera.orthographicSize = newZoom;
+        BloodCamera.orthographicSize = newZoom;
     }
 
     public void AwardResource(eCardPolarity polarity, int value)
@@ -85,16 +103,23 @@ public class Game : MonoBehaviour
 
                 }
 
-                if (TimeInState > 2f)
+                if (TimeInState > 3f)
                 {
-                    SwitchToState(eTurnState.StartOfTurn);
+                    if (StartOfPhase)
+                    {
+                        SwitchToState(eTurnState.PresentStory);
+                    }
+                    else
+                    {
+                        SwitchToState(eTurnState.StartOfTurn);
+                    }
                 }
                 
-
                 break;
             case eTurnState.StartOfTurn:
                 if (TimeInState == 0)
                 {
+                    ZoomLevel = 3;
                     HandManager.Instance.DrawHand();
                 }
                 if (TimeInState > 2f)
@@ -102,6 +127,18 @@ public class Game : MonoBehaviour
                     SwitchToState(eTurnState.InTurn);
                 }
 
+                break;
+
+            case eTurnState.PresentStory:
+                if (TimeInState == 0)
+                {
+                    ZoomLevel = 2;
+                    StoryCard.StartStory();
+                }
+                if (TimeInState > 6f)
+                {
+                    SwitchToState(eTurnState.StartOfTurn);
+                }
 
                 break;
             case eTurnState.InTurn:
@@ -145,7 +182,12 @@ public class Game : MonoBehaviour
                 if (TimeInState == 0)
                 {
                 }
-                if (TimeInState > 2f)
+
+                if (TimeInState > 3f)
+                {
+                    ZoomLevel = 2;
+                }
+                if (TimeInState > 5f)
                 {
                     StartCoroutine(BoardManager.Instance.PresentShop());
                     SwitchToState(eTurnState.InEvent);
