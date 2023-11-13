@@ -66,21 +66,19 @@ public class HandManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.2f);
             Card nextCard = DeckManager.Instance.DrawCard();
-            if (nextCard != null)
+            if (DeckManager.Instance.GetDeckCount() == 0)
             {
-                var newCard = Instantiate(HandCardPrefab, this.transform);
-                newCard.GetComponent<UIHandCard>().Init(nextCard);
-                AudioManager.Instance.PlaySound(SoundFX.CARD_DRAWN);
-                layerSorter.ResolveCardOrdering();
-                handRotator.SetHandRotation();
-                cardsToDraw--;
+                Game.Instance.EndOfRound = true;
             }
-            else
-            {
-                // Shuffle Required
-                DeckManager.Instance.ReshuffleDeck();
-            }
+
+            var newCard = Instantiate(HandCardPrefab, this.transform);
+            newCard.GetComponent<UIHandCard>().Init(nextCard);
+            AudioManager.Instance.PlaySound(SoundFX.CARD_DRAWN);
+            layerSorter.ResolveCardOrdering();
+            handRotator.SetHandRotation();
+            cardsToDraw--;
         }
+
     }
 
 

@@ -14,6 +14,7 @@ public abstract class Card : ScriptableObject
 {
     [Header("Card Info")]
     public string CardName;
+    [TextArea()]
     public string CardDescription;
 
     public int cost;

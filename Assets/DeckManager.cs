@@ -16,7 +16,13 @@ public class DeckManager : MonoBehaviour
     [SerializeField] TMP_Text InDeckText;
     [SerializeField] TMP_Text InDiscardText;
 
-    [SerializeField] Tile[] DeckSizeLevel;
+    [SerializeField] Sprite[] DeckSizeLevel;
+    [SerializeField] Vector3[] DeckTopPositions;
+
+    [SerializeField] Card FallbackCard;
+
+    public GameObject StoryCard;
+    public SpriteRenderer DeckSprite;
 
     private void Awake()
     {
@@ -41,7 +47,7 @@ public class DeckManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateDeckUI();
+        //UpdateDeckUI();
     }
 
 
@@ -49,17 +55,25 @@ public class DeckManager : MonoBehaviour
     {
         InDeckText.text = Deck.Count.ToString();
         InDiscardText.text = DiscardPile.Count.ToString();
-        if (Deck.Count < 5)
+        if (Deck.Count == 0)
         {
-            BoardManager.Instance.SetDeckImage(DeckSizeLevel[0]);
+            DeckSprite.sprite = (DeckSizeLevel[3]);
+            StoryCard.transform.position = DeckTopPositions[3];
+        }
+        else if (Deck.Count < 5)
+        {
+            DeckSprite.sprite = (DeckSizeLevel[2]);
+            StoryCard.transform.position = DeckTopPositions[2];
         }
         else if (Deck.Count < 10)
         {
-            BoardManager.Instance.SetDeckImage(DeckSizeLevel[1]);
+            DeckSprite.sprite = (DeckSizeLevel[1]);
+            StoryCard.transform.position = DeckTopPositions[1];
         }
         else
         {
-            BoardManager.Instance.SetDeckImage(DeckSizeLevel[2]);
+            DeckSprite.sprite = (DeckSizeLevel[0]);
+            StoryCard.transform.position = DeckTopPositions[0];
         }
     }
 
@@ -73,7 +87,10 @@ public class DeckManager : MonoBehaviour
             UpdateDeckUI();
             return DrawCard;
         }
-        return null;
+        else
+        {
+            return FallbackCard;
+        }
     }
 
     internal void AddToDiscard(Card currentCard)
@@ -96,5 +113,10 @@ public class DeckManager : MonoBehaviour
     {
         Deck.Add(currentCard);
         UpdateDeckUI();
+    }
+
+    internal int GetDeckCount()
+    {
+        return Deck.Count;
     }
 }

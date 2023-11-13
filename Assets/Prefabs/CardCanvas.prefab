@@ -146,8 +146,8 @@ MonoBehaviour:
   m_text: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 50536e149812cd148a13f0f763711ab4, type: 2}
-  m_sharedMaterial: {fileID: -1685407825940492229, guid: 50536e149812cd148a13f0f763711ab4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7eb73bba3cc4cfe4b9ee398bee71add6, type: 2}
+  m_sharedMaterial: {fileID: -2714159991613538966, guid: 7eb73bba3cc4cfe4b9ee398bee71add6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13.95
+  m_fontSize: 16.1
   m_fontSizeBase: 49.4
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -404,8 +404,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Card Title
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 50536e149812cd148a13f0f763711ab4, type: 2}
-  m_sharedMaterial: {fileID: -1685407825940492229, guid: 50536e149812cd148a13f0f763711ab4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7eb73bba3cc4cfe4b9ee398bee71add6, type: 2}
+  m_sharedMaterial: {fileID: -2714159991613538966, guid: 7eb73bba3cc4cfe4b9ee398bee71add6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -429,7 +429,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
+  m_fontSize: 33
   m_fontSizeBase: 49.4
   m_fontWeight: 400
   m_enableAutoSizing: 1

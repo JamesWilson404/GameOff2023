@@ -19,6 +19,7 @@ public class Game : MonoBehaviour
         InEvent,
         PostEvent,
         PresentStory,
+        EndOfRound,
     }
 
     [HideInInspector] public float TimeInState = 0;
@@ -39,8 +40,9 @@ public class Game : MonoBehaviour
     public Camera BloodCamera;
 
     float ZoomLevel = 3;
-    float ZoomLerpRate = 0.1f; 
+    float ZoomLerpRate = 0.1f;
 
+    public bool EndOfRound = false;
 
     private void Awake()
     {
@@ -82,7 +84,7 @@ public class Game : MonoBehaviour
         if (polarity == eCardPolarity.Hope)
         {
             HopeTokens += value;
-            AudioManager.Instance.PlaySound(SoundFX.BOOP);
+            AudioManager.Instance.PlaySound(SoundFX.HOPE);
         }
         else if (polarity == eCardPolarity.Blood)
         {
@@ -120,6 +122,7 @@ public class Game : MonoBehaviour
                 if (TimeInState == 0)
                 {
                     ZoomLevel = 3;
+                    ZoomLerpRate = 0.05f;
                     HandManager.Instance.DrawHand();
                 }
                 if (TimeInState > 2f)
@@ -129,10 +132,23 @@ public class Game : MonoBehaviour
 
                 break;
 
+            case eTurnState.EndOfRound:
+                if (TimeInState == 0)
+                {
+                    StoryCard.RevealStory();
+                }
+                if (TimeInState > 2f)
+                {
+
+                }
+
+                break;
+
             case eTurnState.PresentStory:
                 if (TimeInState == 0)
                 {
                     ZoomLevel = 2;
+                    ZoomLerpRate = 0.1f;
                     StoryCard.StartStory();
                 }
                 if (TimeInState > 6f)
@@ -160,12 +176,19 @@ public class Game : MonoBehaviour
             case eTurnState.EndTurn:
                 if (TimeInState == 0)
                 {
-                }
-                if (TimeInState > 2.5f)
-                {
                     EndTurn();
+                }
+                if (TimeInState > 2.5f && !EndOfRound)
+                {
                     SwitchToState(eTurnState.PreEvent);
                 }
+
+                if (TimeInState > 5f && EndOfRound)
+                {
+                    SwitchToState(eTurnState.EndOfRound);
+                    EndOfRound = false;
+                }
+
 
                 break;
             case eTurnState.ResetTurn:
@@ -183,11 +206,12 @@ public class Game : MonoBehaviour
                 {
                 }
 
-                if (TimeInState > 3f)
+                if (TimeInState > 1.5f)
                 {
+                    ZoomLerpRate = 0.1f;
                     ZoomLevel = 2;
                 }
-                if (TimeInState > 5f)
+                if (TimeInState > 3f)
                 {
                     StartCoroutine(BoardManager.Instance.PresentShop());
                     SwitchToState(eTurnState.InEvent);

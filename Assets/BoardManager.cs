@@ -128,7 +128,7 @@ public class BoardManager : MonoBehaviour
 
     public IEnumerator AwardBloodTokens()
     {
-        yield return new WaitForSeconds((BoardManager.Instance.CardLookup.Count + 2) * 0.2f);
+        yield return new WaitForSeconds( 1.2f + (BoardManager.Instance.CardLookup.Count + 2) * 0.2f);
 
         Game.Instance.GameUI.StartTrail();
     }
@@ -152,6 +152,8 @@ public class BoardManager : MonoBehaviour
 
     public IEnumerator CleanUpCards()
     {
+        yield return new WaitForSeconds(1f);
+
         Debug.Log("CLEAN");
         if (CardsParent.transform.childCount == 0)
         {

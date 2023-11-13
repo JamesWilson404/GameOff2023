@@ -5,16 +5,12 @@ using UnityEngine;
 public class StoryCard : MonoBehaviour
 {
     public Sprite TestSprite;
+    public Sprite ScaleSprite;
     public SpriteRenderer CardIcon;
 
     public StoryTitle storyTitle;
 
-    Animator animator;
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
+    [SerializeField] Animator animator;
 
     public void SetSprite()
     {
@@ -30,7 +26,7 @@ public class StoryCard : MonoBehaviour
 
     public void PlayStoryCard()
     {
-        AudioManager.Instance.PlaySound(SoundFX.BELL);
+        //AudioManager.Instance.PlaySound(SoundFX.BELL);
     }
 
     public void StoryLanded()
@@ -40,5 +36,19 @@ public class StoryCard : MonoBehaviour
         Debug.Log("LANDED");
     }
 
+    public void PlayVoiceLine()
+    {
+        VoiceManager.Instance.PlaySound(VoiceFX.THE_DECEASED);
+    }
+
+    public void RevealStory()
+    {
+        animator.SetTrigger("Reveal");
+    }
+    
+    public void RevealStorySprite()
+    {
+        CardIcon.sprite = ScaleSprite;
+    }
 
 }

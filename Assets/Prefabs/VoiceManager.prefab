@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4951758011966608013
+--- !u!1 &193965828412720216
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2989641606714318443}
-  - component: {fileID: 1170896587032827406}
-  - component: {fileID: 4704042433996591087}
+  - component: {fileID: 3377940174346207500}
+  - component: {fileID: 1009120087334068419}
+  - component: {fileID: 6728177217640334862}
   m_Layer: 0
-  m_Name: AudioManager
+  m_Name: VoiceManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2989641606714318443
+--- !u!4 &3377940174346207500
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4951758011966608013}
+  m_GameObject: {fileID: 193965828412720216}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.25979567, y: -0.24634962, z: -0.0065302774}
@@ -33,13 +33,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &1170896587032827406
+--- !u!82 &1009120087334068419
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4951758011966608013}
+  m_GameObject: {fileID: 193965828412720216}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -129,27 +129,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4704042433996591087
+--- !u!114 &6728177217640334862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4951758011966608013}
+  m_GameObject: {fileID: 193965828412720216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdc120ad8c6153845a4ba73f09907ca8, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c83ad60b5b9f594f869be6fd2068e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardDrawm: {fileID: 8300000, guid: aec8c5a44cb467f4da5aa142e7506e2a, type: 3}
-  CardBurn: {fileID: 8300000, guid: 8c1db12d26580694e86a872e5e051ae7, type: 3}
-  BloodSplat: {fileID: 8300000, guid: fc42f7ed614a9784bab26ad3eec6737b, type: 3}
-  CantAfford: {fileID: 8300000, guid: 800fd261ceb1ef6419aaf1f871dea2fd, type: 3}
-  Ghoul: {fileID: 8300000, guid: 8baf6cde35201c84d95e9d237446ef69, type: 3}
-  Nightmare: {fileID: 8300000, guid: 8baf6cde35201c84d95e9d237446ef69, type: 3}
-  Hope: {fileID: 8300000, guid: e21d44c787c41f84a8b5aa85741c3a36, type: 3}
-  BloodDrip: {fileID: 8300000, guid: eb4de18c42ee1e740b3fb3042788f9a3, type: 3}
-  Boop: {fileID: 8300000, guid: 9edd92492dbd7484caac78f08d132452, type: 3}
-  BoneSnap: {fileID: 8300000, guid: dcff6b7e4fd5245459c105712c4654d4, type: 3}
-  Bell: {fileID: 8300000, guid: 0804e35cd9e52e3478fb6c17ab3044c4, type: 3}
-  Writting: {fileID: 8300000, guid: 5833833333233894084e8edb2a0c3609, type: 3}
+  TheDeceased: {fileID: 8300000, guid: 8a3148eba59d4a3479e9de08c119c84c, type: 3}
+  CardBurn: {fileID: 0}
+  BloodSplat: {fileID: 0}
+  CantAfford: {fileID: 0}
+  Ghoul: {fileID: 0}
+  Nightmare: {fileID: 0}
+  Hope: {fileID: 0}
+  BloodDrip: {fileID: 0}
+  Boop: {fileID: 0}
+  BoneSnap: {fileID: 0}
+  Bell: {fileID: 0}
+  Writting: {fileID: 0}
