@@ -47,7 +47,7 @@ public class DeckManager : MonoBehaviour
 
     private void Start()
     {
-        //UpdateDeckUI();
+        UpdateDeckUI();
     }
 
 

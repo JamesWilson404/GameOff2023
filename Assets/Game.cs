@@ -20,6 +20,7 @@ public class Game : MonoBehaviour
         PostEvent,
         PresentStory,
         EndOfRound,
+        Judgement,
     }
 
     [HideInInspector] public float TimeInState = 0;
@@ -139,7 +140,19 @@ public class Game : MonoBehaviour
                 }
                 if (TimeInState > 2f)
                 {
+                    SwitchToState(eTurnState.Judgement);
+                }
 
+                break;
+
+            case eTurnState.Judgement:
+                if (TimeInState == 0)
+                {
+                    StartCoroutine(BoardManager.Instance.SpawnScaleCards());
+                }
+                if (TimeInState > 2f)
+                {
+                    GameUI.LoadEventUI(eEventType.Scales);
                 }
 
                 break;
@@ -232,6 +245,14 @@ public class Game : MonoBehaviour
                 break;
         }
     }
+
+    public void SubmitJudgement()
+    {
+        GameUI.FinishEvent();
+        DeckManager.Instance.ReshuffleDeck();
+        SwitchToState(eTurnState.PreStart);
+    }
+
 
     internal bool TryPurchase(eCardPolarity polarity, int cost)
     {

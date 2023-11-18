@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c83ad60b5b9f594f869be6fd2068e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TheDeceased: {fileID: 8300000, guid: 8a3148eba59d4a3479e9de08c119c84c, type: 3}
+  TheDeceased: {fileID: 8300000, guid: b55bea54413213a4cb9be85c7f44dfc2, type: 3}
   CardBurn: {fileID: 0}
   BloodSplat: {fileID: 0}
   CantAfford: {fileID: 0}

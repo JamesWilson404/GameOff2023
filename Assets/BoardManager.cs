@@ -17,6 +17,9 @@ public class BoardManager : MonoBehaviour
 
     public GameObject NewCardPrefab;
     public GameObject ShopCardPrefab;
+    public GameObject ScaleCardPrefab;
+
+    public UIScaleCard currentHopeCard;
 
     public Card debugCard;
 
@@ -47,6 +50,33 @@ public class BoardManager : MonoBehaviour
         FindStartingDeck();
 
     }
+
+    public IEnumerator SpawnScaleCards()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        var placementPosition1 = GetCellCenter(DeckPosition + new Vector2Int(-1, 0));
+        var newShopCard1 = Instantiate(ScaleCardPrefab, placementPosition1, Quaternion.identity, ShopParent.transform);
+        newShopCard1.GetComponent<UIScaleCard>().Init(eCardPolarity.Blood);
+        yield return new WaitForSeconds(0.2f);
+        var placementPosition2 = GetCellCenter(DeckPosition + new Vector2Int(1, 0));
+        var newShopCard2 = Instantiate(ScaleCardPrefab, placementPosition2, Quaternion.identity, ShopParent.transform);
+        currentHopeCard = newShopCard2.GetComponent<UIScaleCard>();
+        currentHopeCard.Init(eCardPolarity.Hope);
+    }
+
+    public void AddRemovedHope(int v)
+    {
+        if (currentHopeCard == null)
+        {
+            return;
+        }
+        else
+        {
+            currentHopeCard.ChangeValue(v);
+        }
+    }
+
 
     private void FindStartingDeck()
     {
@@ -124,6 +154,13 @@ public class BoardManager : MonoBehaviour
     {
         StartCoroutine(CleanUpShopCards());
         Game.Instance.FinishEvent();
+    }
+
+    public void SubmitJudgement()
+    {
+        StartCoroutine(CleanUpShopCards());
+        Game.Instance.SubmitJudgement();
+
     }
 
     public IEnumerator AwardBloodTokens()

@@ -40,4 +40,9 @@ public class StoryTitle : MonoBehaviour
         GetComponent<Animator>().Play("StoryTitleFadeOut");
     }
 
+    public void Finish()
+    {
+        gameObject.SetActive(false);
+    }
+
 }

@@ -10,6 +10,7 @@ public enum eEventType
     Shop,
     BadCardPick,
     GoodCardPick,
+    Scales,
 
 }
 
@@ -64,6 +65,7 @@ public class GameUI : MonoBehaviour
         animator.SetBool("Shop", false);
         animator.SetBool("BadCard", false);
         animator.SetBool("GoodCard", false);
+        animator.SetBool("Scales", false);
 
         switch (eventType)
         {
@@ -76,6 +78,9 @@ public class GameUI : MonoBehaviour
             case eEventType.GoodCardPick:
                 animator.SetBool("GoodCard", true);
                 break;
+            case eEventType.Scales:
+                animator.SetBool("Scales", true);
+                break;
             default:
                 break;
         }
@@ -87,6 +92,7 @@ public class GameUI : MonoBehaviour
         animator.SetBool("Shop", false);
         animator.SetBool("BadCard", false);
         animator.SetBool("GoodCard", false);
+        animator.SetBool("Scales", false);
     }
 
 
