@@ -8,9 +8,6 @@ using UnityEngine.UI;
 
 public class UIEventCard : UICard, IPointerEnterHandler, IPointerExitHandler
 {
-    public SpriteRenderer CardShadow;
-    public SpriteRenderer CardBacking;
-    public SpriteRenderer CardSprite;
 
     public Image CostIcon;
     public TMP_Text CostText;
@@ -20,10 +17,11 @@ public class UIEventCard : UICard, IPointerEnterHandler, IPointerExitHandler
     public Sprite HopeIcon;
     public Sprite BloodIcon;
 
-    public override void Init(Card newCard)
+    public override void Init(Card newCard, Vector2Int position)
     {
         CurrentCard = newCard;
-        spriteRenderer.sprite = newCard.CardArt;
+        CardSprite.sprite = newCard.CardArt;
+        this.position = position;
 
         if (newCard.polarity == eCardPolarity.Hope)
         {

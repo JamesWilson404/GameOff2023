@@ -9,17 +9,20 @@ public class StoryCard : MonoBehaviour
     public SpriteRenderer CardIcon;
 
     public StoryTitle storyTitle;
+    public StoryData storyData;
+
 
     [SerializeField] Animator animator;
 
     public void SetSprite()
     {
-        CardIcon.sprite = TestSprite;
+        CardIcon.sprite = storyData.StorySprite;
     }
 
 
-    public void StartStory()
+    public void StartStory(StoryData data)
     {
+        storyData = data;
         gameObject.SetActive(true);
         animator.Play("StoryPlaced");
     }
@@ -32,13 +35,13 @@ public class StoryCard : MonoBehaviour
     public void StoryLanded()
     {
         AudioManager.Instance.PlaySound(SoundFX.CARD_DRAWN);
-        storyTitle.SetTitle("The Deceased");
+        storyTitle.SetTitle(storyData.StoryTitle);
         Debug.Log("LANDED");
     }
 
     public void PlayVoiceLine()
     {
-        VoiceManager.Instance.PlaySound(VoiceFX.THE_DECEASED);
+        VoiceManager.Instance.PlaySound(storyData.CardVO);
     }
 
     public void RevealStory()

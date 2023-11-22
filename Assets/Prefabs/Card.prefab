@@ -251,8 +251,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Audio_CardPlacement: {fileID: 8300000, guid: aec8c5a44cb467f4da5aa142e7506e2a, type: 3}
-  spriteRenderer: {fileID: 3497940123699463445}
+  CardShadow: {fileID: 5485157069659633361}
+  CardBacking: {fileID: 5911812681372125933}
+  CardSprite: {fileID: 3497940123699463445}
   CurrentCard: {fileID: 0}
+  position: {x: 0, y: 0}
   RequiresBloodTrail: 0
   BloodTrailPrefab: {fileID: 3809928361793399407, guid: 25c1303ec0cdff74aa89f696f4df6a5d, type: 3}
   NumberOfTrails: 20

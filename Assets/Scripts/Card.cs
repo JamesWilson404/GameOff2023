@@ -9,6 +9,16 @@ public enum eCardPolarity
     Blood
 }
 
+public enum eCardKeyword
+{
+    Painless,
+    Forgetful,
+    Cathartic,
+    Power,
+    Solace,
+    Resilience,
+
+}
 
 public abstract class Card : ScriptableObject
 {
@@ -21,6 +31,7 @@ public abstract class Card : ScriptableObject
     public eCardPolarity polarity;
 
     public Sprite CardArt;
+    public List<eCardKeyword> Keywords;
 
 
     public abstract void OnPlace();

@@ -3255,6 +3255,7 @@ MonoBehaviour:
   ShopCardPrefab: {fileID: 4233017779461347965, guid: b04315b64d1a16243be5b3a5b2739585, type: 3}
   ScaleCardPrefab: {fileID: 4233017779461347965, guid: 6d21807066e1cd9459535556a8f38acf, type: 3}
   currentHopeCard: {fileID: 0}
+  currentBloodCard: {fileID: 0}
   debugCard: {fileID: 11400000, guid: a50d27901adf0aa42b97428a8f4b2eb6, type: 2}
   DeckPosition: {x: 0, y: 0}
   AdjacencyLookup:
@@ -3810,6 +3811,7 @@ MonoBehaviour:
   ScaleSprite: {fileID: 21300000, guid: 248766db3147f524e93a52fc4a3c07d5, type: 3}
   CardIcon: {fileID: 4546460552379648107}
   storyTitle: {fileID: 898414763}
+  storyData: {fileID: 0}
   animator: {fileID: 1162615645}
 --- !u!95 &1162615645
 Animator:
@@ -5655,6 +5657,10 @@ MonoBehaviour:
   GameCamera: {fileID: 519420031}
   BloodCamera: {fileID: 324714560}
   EndOfRound: 0
+  HopeSubmitted: 0
+  Stories:
+  - {fileID: 11400000, guid: b4ec1c531d18caa44a92c9048e479a9c, type: 2}
+  - {fileID: 11400000, guid: c8d5336f3a407ee40bd9217458b97630, type: 2}
 --- !u!1 &1802071177
 GameObject:
   m_ObjectHideFlags: 0

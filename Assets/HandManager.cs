@@ -71,16 +71,20 @@ public class HandManager : MonoBehaviour
                 Game.Instance.EndOfRound = true;
             }
 
-            var newCard = Instantiate(HandCardPrefab, this.transform);
-            newCard.GetComponent<UIHandCard>().Init(nextCard);
-            AudioManager.Instance.PlaySound(SoundFX.CARD_DRAWN);
-            layerSorter.ResolveCardOrdering();
-            handRotator.SetHandRotation();
+            AddCardToHand(nextCard);
             cardsToDraw--;
         }
 
     }
 
+    public void AddCardToHand(Card nextCard)
+    {
+        var newCard = Instantiate(HandCardPrefab, this.transform);
+        newCard.GetComponent<UIHandCard>().Init(nextCard);
+        AudioManager.Instance.PlaySound(SoundFX.CARD_DRAWN);
+        layerSorter.ResolveCardOrdering();
+        handRotator.SetHandRotation();
+    }
 
     internal void CardHovered(Canvas cardCanvas)
     {
@@ -190,5 +194,25 @@ public class HandManager : MonoBehaviour
         PlacementCard.SetActive(true);
 
         PlacementCard.transform.position = mousePos;
+    }
+
+    internal void DiscardHand()
+    {
+        foreach (Transform item in transform)
+        {
+            DiscardCard(item.gameObject);
+        }
+    }
+
+    private void DiscardCard(GameObject gameObject)
+    {
+        foreach (Transform item in transform)
+        {
+            if (item.gameObject == gameObject)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
     }
 }

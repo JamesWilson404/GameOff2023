@@ -489,11 +489,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Audio_CardPlacement: {fileID: 8300000, guid: aec8c5a44cb467f4da5aa142e7506e2a, type: 3}
-  spriteRenderer: {fileID: 3497940123699463445}
-  CurrentCard: {fileID: 0}
   CardShadow: {fileID: 5485157069659633361}
   CardBacking: {fileID: 5911812681372125933}
-  CardSprite: {fileID: 331964227697900470}
+  CardSprite: {fileID: 3497940123699463445}
+  CurrentCard: {fileID: 0}
+  position: {x: 0, y: 0}
   CostText: {fileID: 408792138898531904}
   canvasGroup: {fileID: 2717259241461906092}
   HopeIcon: {fileID: 21300000, guid: 9f32317c61b7d604c99abe490441505c, type: 3}

@@ -67,6 +67,8 @@ public class GameUI : MonoBehaviour
         animator.SetBool("GoodCard", false);
         animator.SetBool("Scales", false);
 
+        BoardManager.Instance.ToggleCardDisplay(false);
+
         switch (eventType)
         {
             case eEventType.Shop:
@@ -93,6 +95,7 @@ public class GameUI : MonoBehaviour
         animator.SetBool("BadCard", false);
         animator.SetBool("GoodCard", false);
         animator.SetBool("Scales", false);
+        BoardManager.Instance.ToggleCardDisplay(true);
     }
 
 

@@ -8,10 +8,6 @@ using UnityEngine.UI;
 
 public class UIScaleCard : UICard, IPointerEnterHandler, IPointerExitHandler
 {
-    public SpriteRenderer CardShadow;
-    public SpriteRenderer CardBacking;
-    public Image CardSprite;
-
     public TMP_Text CostText;
 
     public CanvasGroup canvasGroup;
@@ -74,6 +70,7 @@ public class UIScaleCard : UICard, IPointerEnterHandler, IPointerExitHandler
         current = Mathf.Clamp(current + v, 0, Game.Instance.HopeTokens);
         CostText.text = current.ToString();
         AudioManager.Instance.PlaySound(SoundFX.CARD_DRAWN);
+        Game.Instance.HopeSubmitted = current;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

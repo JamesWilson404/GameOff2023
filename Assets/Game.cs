@@ -21,7 +21,10 @@ public class Game : MonoBehaviour
         PresentStory,
         EndOfRound,
         Judgement,
+        PostJudgement,
+        StartOfRound,
     }
+
 
     [HideInInspector] public float TimeInState = 0;
     public eTurnState TurnState = eTurnState.PreStart;
@@ -44,6 +47,13 @@ public class Game : MonoBehaviour
     float ZoomLerpRate = 0.1f;
 
     public bool EndOfRound = false;
+    public int HopeSubmitted = 0;
+
+    public StoryData[] Stories;
+    public StoryData CurrentStory;
+
+    public GameEvents EventManager;
+
 
     private void Awake()
     {
@@ -58,7 +68,7 @@ public class Game : MonoBehaviour
         }
 
         rand = new System.Random((int) DateTime.Now.TimeOfDay.TotalSeconds);
-
+        EventManager = new GameEvents();
     }
 
     private void Update()
@@ -162,7 +172,8 @@ public class Game : MonoBehaviour
                 {
                     ZoomLevel = 2;
                     ZoomLerpRate = 0.1f;
-                    StoryCard.StartStory();
+                    CurrentStory = PickNewStory();
+                    StoryCard.StartStory(CurrentStory);
                 }
                 if (TimeInState > 6f)
                 {
@@ -241,18 +252,80 @@ public class Game : MonoBehaviour
                 }
                 break;
 
+            case eTurnState.PostJudgement:
+                if (TimeInState == 0)
+                {
+                    StartCoroutine(DeligateJudgementRewards());
+                }
+                if (TimeInState > 1f)
+                {
+                    
+                }
+                break;
+
+            case eTurnState.StartOfRound:
+                if (TimeInState == 0)
+                {
+                    DeckManager.Instance.ReshuffleDeck();
+                }
+                if (TimeInState > 1f)
+                {
+                    SwitchToState(eTurnState.StartOfTurn);
+                }
+                break;
+
+
             default:
                 break;
         }
     }
 
-    public void SubmitJudgement()
+    private IEnumerator DeligateJudgementRewards()
     {
-        GameUI.FinishEvent();
-        DeckManager.Instance.ReshuffleDeck();
-        SwitchToState(eTurnState.PreStart);
+        yield return new WaitForSeconds(1f);
+        BoardManager.Instance.ToggleCardDisplay(true);
+
+        if (HopeSubmitted == BloodTokens)
+        {
+            SwitchToState(eTurnState.StartOfRound);
+        }
+        else if (HopeSubmitted > BloodTokens)
+        {
+            HandManager.Instance.AddCardToHand(CurrentStory.GoodRewards[0]);
+            HandManager.Instance.AddCardToHand(CurrentStory.GoodRewards[1]);
+        }
+        else if (BloodTokens > HopeSubmitted)
+        {
+            HandManager.Instance.AddCardToHand(CurrentStory.BadRewards[0]);
+            HandManager.Instance.AddCardToHand(CurrentStory.BadRewards[1]);
+        }
+
+        HopeSubmitted = 0;
+        BloodTokens = 0;
+        GameUI.UpdateUI();
     }
 
+    private StoryData PickNewStory()
+    {
+        return Stories[rand.Next(Stories.Length)];
+    }
+
+    public void SubmitJudgement()
+    {
+        HopeTokens -= HopeSubmitted;
+        GameUI.UpdateUI();
+
+
+        GameUI.FinishEvent();
+        SwitchToState(eTurnState.PostJudgement);
+    }
+
+    
+    public void RewardPlayed()
+    {
+        HandManager.Instance.DiscardHand();
+        SwitchToState(eTurnState.StartOfRound);
+    }
 
     internal bool TryPurchase(eCardPolarity polarity, int cost)
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -20,6 +21,7 @@ public class BoardManager : MonoBehaviour
     public GameObject ScaleCardPrefab;
 
     public UIScaleCard currentHopeCard;
+    public UIScaleCard currentBloodCard;
 
     public Card debugCard;
 
@@ -57,12 +59,29 @@ public class BoardManager : MonoBehaviour
 
         var placementPosition1 = GetCellCenter(DeckPosition + new Vector2Int(-1, 0));
         var newShopCard1 = Instantiate(ScaleCardPrefab, placementPosition1, Quaternion.identity, ShopParent.transform);
-        newShopCard1.GetComponent<UIScaleCard>().Init(eCardPolarity.Blood);
+        currentBloodCard = newShopCard1.GetComponent<UIScaleCard>();
+        currentBloodCard.Init(eCardPolarity.Blood);
         yield return new WaitForSeconds(0.2f);
         var placementPosition2 = GetCellCenter(DeckPosition + new Vector2Int(1, 0));
         var newShopCard2 = Instantiate(ScaleCardPrefab, placementPosition2, Quaternion.identity, ShopParent.transform);
         currentHopeCard = newShopCard2.GetComponent<UIScaleCard>();
         currentHopeCard.Init(eCardPolarity.Hope);
+    }
+
+    internal void ToggleCardDisplay(bool v)
+    {
+        if (CardLookup.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var item in CardLookup)
+        {
+            if (item.Value != null)
+            {
+                item.Value.ToggleVisibility(v);
+            }
+        }
     }
 
     public void AddRemovedHope(int v)
@@ -123,7 +142,7 @@ public class BoardManager : MonoBehaviour
             var placementPosition = GetCellCenter(Coords2D);
             var newCard = Instantiate(NewCardPrefab, placementPosition, Quaternion.identity, CardsParent.transform);
             var uiCard = newCard.GetComponent<UIGameCard>();
-            uiCard.Init(cardToPlace.GetComponent<UIHandCard>().CurrentCard);
+            uiCard.Init(cardToPlace.GetComponent<UIHandCard>().CurrentCard, Coords2D);
             PlaceCard(Coords2D, uiCard);
             return true;
         }
@@ -144,7 +163,7 @@ public class BoardManager : MonoBehaviour
 
             var placementPosition = GetCellCenter(DeckPosition + new Vector2Int(i, 0));
             var newShopCard = Instantiate(ShopCardPrefab, placementPosition, Quaternion.identity, ShopParent.transform);
-            newShopCard.GetComponent<UIEventCard>().Init(debugCard);
+            newShopCard.GetComponent<UIEventCard>().Init(debugCard, DeckPosition + new Vector2Int(i, 0));
             yield return new WaitForSeconds(0.2f);
 
         }
@@ -158,6 +177,13 @@ public class BoardManager : MonoBehaviour
 
     public void SubmitJudgement()
     {
+        if (Game.Instance.TurnState != Game.eTurnState.Judgement)
+        {
+            return;
+        }
+
+
+
         StartCoroutine(CleanUpShopCards());
         Game.Instance.SubmitJudgement();
 
@@ -197,16 +223,41 @@ public class BoardManager : MonoBehaviour
             yield return null;
         }
 
-        while (CardsParent.transform.childCount > 0)
+        List<UIGameCard> CardsToDestroy = new List<UIGameCard>();
+        List<UIGameCard> CardsToKeep = new List<UIGameCard>();
+
+        foreach (Transform card in CardsParent.transform)
         {
-            var card = CardsParent.transform.GetChild(0);
-            DeckManager.Instance.AddToDiscard(card.GetComponent<UICard>().CurrentCard);
+            var cardData = card.GetComponent<UIGameCard>();
+
+            if (!cardData.CurrentCard.Keywords.Contains(eCardKeyword.Forgetful) && !cardData.CurrentCard.Keywords.Contains(eCardKeyword.Power))
+            {
+                DeckManager.Instance.AddToDiscard(card.GetComponent<UICard>().CurrentCard);
+            }
+
+            if (!cardData.CurrentCard.Keywords.Contains(eCardKeyword.Power))
+            {
+                CardsToDestroy.Add(cardData);
+            }
+            else
+            {
+                CardsToKeep.Add(cardData);
+            }
+        }
+
+        foreach (UIGameCard card in CardsToDestroy)
+        {
             Destroy(card.gameObject);
             AudioManager.Instance.PlaySound(SoundFX.CARD_BURN);
-            yield return new WaitForSeconds(0.2f);      
+            yield return new WaitForSeconds(0.2f);
         }
-        
         CardLookup.Clear();
+
+        foreach (UIGameCard card in CardsToKeep)
+        {
+            CardLookup.Add(card.position, (UICard)card);
+        }
+
         CardLookup.Add(DeckPosition, null);
     }
 

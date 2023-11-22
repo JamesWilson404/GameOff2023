@@ -9,15 +9,19 @@ public abstract class UICard : MonoBehaviour
     protected AudioSource AudioPlayer;
     [SerializeField] protected AudioClip Audio_CardPlacement;
 
-    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer CardShadow;
+    public SpriteRenderer CardBacking;
+    public SpriteRenderer CardSprite;
 
     public Card CurrentCard;
 
+    public Vector2Int position; 
 
-    public virtual void Init(Card newCard)
+    public virtual void Init(Card newCard, Vector2Int pos)
     {
         CurrentCard = newCard;
-        spriteRenderer.sprite = newCard.CardArt;
+        CardSprite.sprite = newCard.CardArt;
+        position = pos;
     }
 
     private void Awake()
@@ -29,5 +33,13 @@ public abstract class UICard : MonoBehaviour
     {
         AudioPlayer.PlayOneShot(Audio_CardPlacement);
     }
+
+    public void ToggleVisibility(bool v)
+    {
+        CardShadow.enabled = v;
+        CardBacking.enabled = v;
+        CardSprite.enabled = v;
+    }
+
 
 }
