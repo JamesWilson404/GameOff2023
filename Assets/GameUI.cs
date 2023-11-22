@@ -11,7 +11,7 @@ public enum eEventType
     BadCardPick,
     GoodCardPick,
     Scales,
-
+    Boss,
 }
 
 
@@ -22,12 +22,14 @@ public class GameUI : MonoBehaviour
     [SerializeField] TMP_Text HopeTokenText;
 
     [SerializeField] GameObject BloodTarget;
+    [SerializeField] GameObject ScalesTarget;
 
     [SerializeField] Animator animator;
 
     [SerializeField] BloodUITrail BloodTrail;
     [SerializeField] Camera Camera;
 
+    [SerializeField] TheScalesUI TheScalesUI;
 
 
     private void Awake()
@@ -35,28 +37,50 @@ public class GameUI : MonoBehaviour
         animator = GetComponent<Animator>();   
     }
 
-
-    // Start is called before the first frame update
-    void Start()
+    public void SetScalesHealth(int max, int current)
     {
-        
+        TheScalesUI.BarFill.fillAmount = (float)current / (float)max;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetScaleTurnCount(int TurnsLeft)
     {
-        UpdateUI();
+        if (TurnsLeft > 0)
+        {
+            TheScalesUI.TurnsText.text = TurnsLeft.ToString() + " Rounds Until Judgement";
+        }
+        else
+        {
+            TheScalesUI.TurnsText.text = "Judgement!";
+        }
     }
+
+    public void HideResources()
+    {
+        animator.Play("HideResources");
+    }
+
 
     public void StartTrail()
     {
-        BloodTrail.StartPath(BoardManager.Instance.GetCellCenter(BoardManager.Instance.DeckPosition), BloodTarget.transform.position);
+        if (Game.Instance.inBoss)
+        {
+            BloodTrail.StartPath(BoardManager.Instance.GetCellCenter(BoardManager.Instance.DeckPosition), ScalesTarget.transform.position);
+        }
+        else
+        {
+            BloodTrail.StartPath(BoardManager.Instance.GetCellCenter(BoardManager.Instance.DeckPosition), BloodTarget.transform.position);
+        }
     }
 
     public void UpdateUI()
     {
         BloodTokenText.text = Game.Instance.BloodTokens.ToString();
         HopeTokenText.text = Game.Instance.HopeTokens.ToString();
+
+        if (Game.Instance.inBoss)
+        {
+            SetScalesHealth(Game.Instance.BossMaxHealth, Game.Instance.BossHealth);
+        }
     }
 
 
@@ -66,8 +90,12 @@ public class GameUI : MonoBehaviour
         animator.SetBool("BadCard", false);
         animator.SetBool("GoodCard", false);
         animator.SetBool("Scales", false);
+        animator.SetBool("Boss", false);
 
-        BoardManager.Instance.ToggleCardDisplay(false);
+        if (eventType != eEventType.Boss)
+        {
+            BoardManager.Instance.ToggleCardDisplay(false);
+        }
 
         switch (eventType)
         {
@@ -83,6 +111,9 @@ public class GameUI : MonoBehaviour
             case eEventType.Scales:
                 animator.SetBool("Scales", true);
                 break;
+            case eEventType.Boss:
+                animator.SetBool("Boss", true);
+                break;
             default:
                 break;
         }
@@ -95,12 +126,13 @@ public class GameUI : MonoBehaviour
         animator.SetBool("BadCard", false);
         animator.SetBool("GoodCard", false);
         animator.SetBool("Scales", false);
-        BoardManager.Instance.ToggleCardDisplay(true);
+        animator.SetBool("Boss", false);
     }
 
 
     public void NotEnoughResources(eCardPolarity polarity)
     {
+
         if (polarity == eCardPolarity.Hope)
         {
             animator.Play("HopeJiggle");
@@ -115,6 +147,11 @@ public class GameUI : MonoBehaviour
 
     public void ResourcesAdded(eCardPolarity polarity, int amount)
     {
+        if (Game.Instance.inBoss)
+        {
+            return;
+        }
+
         if (polarity == eCardPolarity.Hope)
         {
             animator.Play("HopeAdded");

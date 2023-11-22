@@ -119,7 +119,7 @@ public class BoardManager : MonoBehaviour
 
     public void PlaceCard(Vector2Int position, UIGameCard card)
     {
-        if (!BloodTiles.ContainsKey(position) && card != null)
+        if (!BloodTiles.ContainsKey(position) && card != null && !card.CurrentCard.Keywords.Contains(eCardKeyword.Painless))
         {
             //  New Blood Tile
             BloodTiles.Add(position, card);
@@ -133,16 +133,15 @@ public class BoardManager : MonoBehaviour
         return coords2D == DeckPosition;
     }
 
-    public bool TryPlaceCard(Vector3 mousePos, GameObject cardToPlace)
+    public bool TryPlaceCard(Vector3 mousePos, Card cardToPlace)
     {
         var Coords2D = GetNearestTile(mousePos);
         if (IsPlacementValid(Coords2D))
         {
-            Debug.Log("PLACABLE");
             var placementPosition = GetCellCenter(Coords2D);
             var newCard = Instantiate(NewCardPrefab, placementPosition, Quaternion.identity, CardsParent.transform);
             var uiCard = newCard.GetComponent<UIGameCard>();
-            uiCard.Init(cardToPlace.GetComponent<UIHandCard>().CurrentCard, Coords2D);
+            uiCard.Init(cardToPlace, Coords2D);
             PlaceCard(Coords2D, uiCard);
             return true;
         }
@@ -263,7 +262,6 @@ public class BoardManager : MonoBehaviour
 
     public IEnumerator CleanUpShopCards()
     {
-        Debug.Log("CLEAN");
         if (ShopParent.transform.childCount == 0)
         {
             yield return null;

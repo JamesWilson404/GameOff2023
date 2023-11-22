@@ -154,11 +154,23 @@ public class HandManager : MonoBehaviour
                 PlacementCard.SetActive(false);
                 HandGroup.alpha = 1;
                 ReturnGroup.alpha = 0;
-                if (BoardManager.Instance.TryPlaceCard(mousePosition, CardToPlace))
+                var card = CardToPlace.GetComponent<UIHandCard>().CurrentCard;
+
+                if (BoardManager.Instance.TryPlaceCard(mousePosition, card))
                 {
                     Destroy(CardToPlace.gameObject);
                     layerSorter.ResolveCardOrdering();
-                    handRotator.SetHandRotation();                    
+                    handRotator.SetHandRotation();
+
+                    if (Game.Instance.TurnState == Game.eTurnState.PostJudgement)
+                    {
+                        if ( card.Keywords.Contains(eCardKeyword.Power))
+                        {
+                            Game.Instance.RewardPlayed();
+                        }
+                    }
+
+
                 }
 
                 CardToPlace = null;

@@ -23,7 +23,11 @@ public class Game : MonoBehaviour
         Judgement,
         PostJudgement,
         StartOfRound,
+        Boss,
+        GameOver,
+        GameWon,
     }
+
 
 
     [HideInInspector] public float TimeInState = 0;
@@ -53,7 +57,15 @@ public class Game : MonoBehaviour
     public StoryData CurrentStory;
 
     public GameEvents EventManager;
+    public int StoriesRevealed = 0;
+    int MaxStories = 1;
 
+    public bool inBoss = false;
+    public int turnsInBoss = 0;
+    public int MaxTurnsInBoss = 3;
+
+    public int BossMaxHealth = 100;
+    public int BossHealth = 100;
 
     private void Awake()
     {
@@ -103,6 +115,7 @@ public class Game : MonoBehaviour
             AudioManager.Instance.PlaySound(SoundFX.BlOOD_DRIP);
         }
 
+        EventManager.OnResourceGained(polarity, value);
         GameUI.ResourcesAdded(polarity, value);
     }
 
@@ -113,21 +126,42 @@ public class Game : MonoBehaviour
             case eTurnState.PreStart:
                 if (TimeInState == 0)
                 {
-
+                    if (inBoss)
+                    {
+                        turnsInBoss++;
+                        GameUI.SetScaleTurnCount(MaxTurnsInBoss - turnsInBoss);
+                        AudioManager.Instance.PlaySound(SoundFX.BELL);
+                    }
                 }
 
                 if (TimeInState > 3f)
                 {
-                    if (StartOfPhase)
+                    if (StoriesRevealed < MaxStories)
                     {
                         SwitchToState(eTurnState.PresentStory);
+                        
                     }
                     else
                     {
-                        SwitchToState(eTurnState.StartOfTurn);
+                        SwitchToState(eTurnState.Boss);
                     }
                 }
                 
+                break;
+
+            case eTurnState.Boss:
+                if (TimeInState == 0)
+                {
+                    inBoss = true;
+                    GameUI.LoadEventUI(eEventType.Boss);
+                    GameUI.HideResources();
+                }
+
+                if (TimeInState > 1f)
+                {
+                    SwitchToState(eTurnState.StartOfTurn);
+                }
+
                 break;
             case eTurnState.StartOfTurn:
                 if (TimeInState == 0)
@@ -143,10 +177,41 @@ public class Game : MonoBehaviour
 
                 break;
 
+            case eTurnState.GameOver:
+                if (TimeInState == 0)
+                {
+                    Debug.Log("GAME LOST");
+                }
+                if (TimeInState > 2f)
+                {
+                }
+
+                break;
+
+            case eTurnState.GameWon:
+                if (TimeInState == 0)
+                {
+                    Debug.Log("GAME WON");
+                }
+                if (TimeInState > 2f)
+                {
+                }
+
+                break;
+
+
+
             case eTurnState.EndOfRound:
                 if (TimeInState == 0)
                 {
-                    StoryCard.RevealStory();
+                    if (inBoss)
+                    {
+                        SwitchToState(eTurnState.StartOfRound);
+                    }
+                    else
+                    {
+                        StoryCard.RevealStory();
+                    }
                 }
                 if (TimeInState > 2f)
                 {
@@ -158,6 +223,7 @@ public class Game : MonoBehaviour
             case eTurnState.Judgement:
                 if (TimeInState == 0)
                 {
+                    BoardManager.Instance.ToggleCardDisplay(false);
                     StartCoroutine(BoardManager.Instance.SpawnScaleCards());
                 }
                 if (TimeInState > 2f)
@@ -174,6 +240,7 @@ public class Game : MonoBehaviour
                     ZoomLerpRate = 0.1f;
                     CurrentStory = PickNewStory();
                     StoryCard.StartStory(CurrentStory);
+                    StoriesRevealed++;
                 }
                 if (TimeInState > 6f)
                 {
@@ -198,21 +265,37 @@ public class Game : MonoBehaviour
 
                 break;
             case eTurnState.EndTurn:
+
                 if (TimeInState == 0)
                 {
                     EndTurn();
                 }
                 if (TimeInState > 2.5f && !EndOfRound)
                 {
-                    SwitchToState(eTurnState.PreEvent);
+                    if (inBoss)
+                    {
+                        SwitchToState(eTurnState.ResetTurn);
+                    }
+                    else
+                    {
+                        SwitchToState(eTurnState.PreEvent);
+                    }
                 }
+
 
                 if (TimeInState > 5f && EndOfRound)
                 {
-                    SwitchToState(eTurnState.EndOfRound);
-                    EndOfRound = false;
+                    if (turnsInBoss >= MaxTurnsInBoss)
+                    {
+                        SwitchToState(eTurnState.GameOver);
+                    }
+                    else
+                    {
+                        SwitchToState(eTurnState.EndOfRound);
+                        EndOfRound = false;
+                    }
                 }
-
+                
 
                 break;
             case eTurnState.ResetTurn:
@@ -248,6 +331,7 @@ public class Game : MonoBehaviour
                 }
                 if (TimeInState > 1f)
                 {
+                    BoardManager.Instance.ToggleCardDisplay(true);
                     SwitchToState(eTurnState.ResetTurn);
                 }
                 break;
@@ -267,10 +351,11 @@ public class Game : MonoBehaviour
                 if (TimeInState == 0)
                 {
                     DeckManager.Instance.ReshuffleDeck();
+                    
                 }
                 if (TimeInState > 1f)
                 {
-                    SwitchToState(eTurnState.StartOfTurn);
+                    SwitchToState(eTurnState.PreStart);
                 }
                 break;
 
@@ -283,7 +368,6 @@ public class Game : MonoBehaviour
     private IEnumerator DeligateJudgementRewards()
     {
         yield return new WaitForSeconds(1f);
-        BoardManager.Instance.ToggleCardDisplay(true);
 
         if (HopeSubmitted == BloodTokens)
         {
@@ -303,6 +387,25 @@ public class Game : MonoBehaviour
         HopeSubmitted = 0;
         BloodTokens = 0;
         GameUI.UpdateUI();
+
+        yield return new WaitForSeconds(1f);
+        BoardManager.Instance.ToggleCardDisplay(true);
+
+    }
+
+
+    internal void HealBoss(int value)
+    {
+        BossHealth = Mathf.Clamp(BossHealth + value, 0, BossMaxHealth);
+    }
+
+    internal void DamageBoss(int value)
+    {
+        BossHealth = Mathf.Clamp(BossHealth - value, 0, BossMaxHealth);
+        if (BossHealth == 0)
+        {
+            SwitchToState(eTurnState.GameWon);
+        }
     }
 
     private StoryData PickNewStory()

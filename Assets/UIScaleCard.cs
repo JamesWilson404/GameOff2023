@@ -15,7 +15,8 @@ public class UIScaleCard : UICard, IPointerEnterHandler, IPointerExitHandler
     public Sprite HopeIcon;
     public Sprite BloodIcon;
 
-    public GameObject Scalers;
+    public Image TokenIcon;
+
     public bool aloud = false;
 
     public bool inside = false;
@@ -24,13 +25,13 @@ public class UIScaleCard : UICard, IPointerEnterHandler, IPointerExitHandler
     {
         if (polarity == eCardPolarity.Hope)
         {
-            CardSprite.sprite = HopeIcon;
+            TokenIcon.sprite = HopeIcon;
             CostText.text = "0";
             aloud = true;
         }
         else if (polarity == eCardPolarity.Blood)
         {
-            CardSprite.sprite = BloodIcon;
+            TokenIcon.sprite = BloodIcon;
             CostText.text = Game.Instance.BloodTokens.ToString();
         }
 

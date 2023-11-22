@@ -10,15 +10,25 @@ public class GameEvents
 
     public void OnCardPlayed(Card card)
     {
-        if (Game.Instance.TurnState == Game.eTurnState.PostJudgement)
+        card.OnPlace();
+    }
+
+
+    internal void OnResourceGained(eCardPolarity polarity, int value)
+    {
+        if (Game.Instance.inBoss)
         {
-            if (card.Keywords.Contains(eCardKeyword.Power))
+            switch (polarity)
             {
-                Game.Instance.RewardPlayed();
+                case eCardPolarity.Hope:
+                    Game.Instance.DamageBoss(value);
+                    break;
+                case eCardPolarity.Blood:
+                    Game.Instance.HealBoss(value);
+                    break;
+                default:
+                    break;
             }
         }
-
-        card.OnPlace();
-
     }
 }

@@ -498,6 +498,7 @@ MonoBehaviour:
   canvasGroup: {fileID: 2717259241461906092}
   HopeIcon: {fileID: 21300000, guid: 9f32317c61b7d604c99abe490441505c, type: 3}
   BloodIcon: {fileID: 21300000, guid: c5234b813635f4c4bbe9c3f8d7c331e4, type: 3}
+  TokenIcon: {fileID: 331964227697900470}
   Scalers: {fileID: 0}
   aloud: 0
   inside: 0
