@@ -10,6 +10,7 @@ public class HandManager : MonoBehaviour
     [SerializeField] GameObject HandCardPrefab;
 
     public static HandManager Instance;
+
     GameObject CurrentCard;
 
     HandRotator handRotator;
@@ -21,6 +22,9 @@ public class HandManager : MonoBehaviour
 
     [SerializeField] CanvasGroup HandGroup;
     [SerializeField] CanvasGroup ReturnGroup;
+
+    public GameObject DiscardPrefab;
+    public GameObject DiscardParent;
 
     public int HandCount = 0;
 
@@ -53,9 +57,6 @@ public class HandManager : MonoBehaviour
 
     internal void DrawHand()
     {
-
-
-
         StartCoroutine(DrawHandCoroutine());
     }
 
@@ -65,16 +66,35 @@ public class HandManager : MonoBehaviour
         while (cardsToDraw > 0)
         {
             yield return new WaitForSeconds(0.2f);
-            Card nextCard = DeckManager.Instance.DrawCard();
-            if (DeckManager.Instance.GetDeckCount() == 0)
-            {
-                Game.Instance.EndOfRound = true;
-            }
-
-            AddCardToHand(nextCard);
+            DrawCard();
             cardsToDraw--;
         }
 
+    }
+
+    public void DrawCard(int numberToDraw)
+    {
+        StartCoroutine(DrawWithWait(numberToDraw));
+    }
+
+    public IEnumerator DrawWithWait(int numberToDraw)
+    {
+        yield return new WaitForSeconds(0.2f);
+        for (int i = 0; i < numberToDraw; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            DrawCard();
+        }
+    }
+
+    public void DrawCard()
+    {
+        var newCard = DeckManager.Instance.DrawCard();
+        if (DeckManager.Instance.GetDeckCount() == 0)
+        {
+            Game.Instance.EndOfRound = true;
+        }
+        AddCardToHand(newCard);
     }
 
     public void AddCardToHand(Card nextCard)
@@ -159,6 +179,8 @@ public class HandManager : MonoBehaviour
                 if (BoardManager.Instance.TryPlaceCard(mousePosition, card))
                 {
                     Destroy(CardToPlace.gameObject);
+                    //DiscardCard(CardToPlace.gameObject);
+                    
                     layerSorter.ResolveCardOrdering();
                     handRotator.SetHandRotation();
 
@@ -208,11 +230,20 @@ public class HandManager : MonoBehaviour
         PlacementCard.transform.position = mousePos;
     }
 
-    internal void DiscardHand()
+    internal void DestroyHand()
     {
         foreach (Transform item in transform)
         {
-            DiscardCard(item.gameObject);
+            Destroy(item.gameObject);
+        }
+    }
+
+    internal void DiscardRandomCard()
+    {
+        if (transform.childCount > 0)
+        {
+            int child = Game.Instance.rand.Next(transform.childCount);
+            DiscardCard(transform.GetChild(child).gameObject);
         }
     }
 
@@ -222,9 +253,20 @@ public class HandManager : MonoBehaviour
         {
             if (item.gameObject == gameObject)
             {
+                var gCard = gameObject.GetComponent<UIHandCard>().CurrentCard;
+                DeckManager.Instance.AddToDiscard(gCard);
+                SpawnDiscard(gameObject, gCard);
                 Destroy(gameObject);
                 return;
             }
         }
+    }
+
+    private void SpawnDiscard(GameObject g, Card gCard)
+    {
+        var newDiscard = Instantiate(DiscardPrefab, gameObject.transform.position, Quaternion.identity, DiscardParent.transform);
+        var card = newDiscard.GetComponent<UIHandCard>();
+        card.Init(gCard);
+        card.transform.localPosition = g.transform.localPosition;
     }
 }

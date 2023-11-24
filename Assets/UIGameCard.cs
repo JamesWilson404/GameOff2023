@@ -25,6 +25,6 @@ public class UIGameCard : UICard
 
     public void Placed()
     {
-        Game.Instance.EventManager.OnCardPlayed(CurrentCard);
+        Game.Instance.EventManager.OnCardPlayed(this, CurrentCard);
     }
 }

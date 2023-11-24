@@ -14,6 +14,7 @@ public class BoardManager : MonoBehaviour
     public GameObject BloodParent;
 
     public Dictionary<Vector2Int, UICard> CardLookup;
+
     public Dictionary<Vector2Int, UICard> BloodTiles;
 
     public GameObject NewCardPrefab;
@@ -96,6 +97,22 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    internal Vector2Int GetRandomEmptyLocations(bool onBlood)
+    {
+        if (onBlood)
+        {
+            var listOfEmptyBlood = BloodTiles.Keys.ToList().FindAll(e => !CardLookup.ContainsKey(e));
+            if (listOfEmptyBlood.Count > 0)
+            {
+                return listOfEmptyBlood[Game.Instance.rand.Next(listOfEmptyBlood.Count)];
+            }
+            else
+            {
+                return DeckPosition;
+            }
+        }
+        return DeckPosition;
+    }
 
     private void FindStartingDeck()
     {
@@ -147,6 +164,16 @@ public class BoardManager : MonoBehaviour
         }
         return false;
     }
+
+    public void PlayCard(Card cardData, Vector2Int Coords2D)
+    {
+        var placementPosition = GetCellCenter(Coords2D);
+        var newCard = Instantiate(NewCardPrefab, placementPosition, Quaternion.identity, CardsParent.transform);
+        var uiCard = newCard.GetComponent<UIGameCard>();
+        uiCard.Init(cardData, Coords2D);
+        PlaceCard(Coords2D, uiCard);
+    }
+
 
     internal IEnumerator PresentShop()
     {
@@ -216,7 +243,6 @@ public class BoardManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        Debug.Log("CLEAN");
         if (CardsParent.transform.childCount == 0)
         {
             yield return null;
@@ -229,18 +255,36 @@ public class BoardManager : MonoBehaviour
         {
             var cardData = card.GetComponent<UIGameCard>();
 
-            if (!cardData.CurrentCard.Keywords.Contains(eCardKeyword.Forgetful) && !cardData.CurrentCard.Keywords.Contains(eCardKeyword.Power))
+            if (!cardData.CurrentCard.Keywords.Contains(eCardKeyword.Forgetful) &&
+                !cardData.CurrentCard.Keywords.Contains(eCardKeyword.Power) &&
+                !cardData.CurrentCard.Keywords.Contains(eCardKeyword.StoryKeep))
             {
                 DeckManager.Instance.AddToDiscard(card.GetComponent<UICard>().CurrentCard);
             }
 
-            if (!cardData.CurrentCard.Keywords.Contains(eCardKeyword.Power))
+            if (!cardData.CurrentCard.Keywords.Contains(eCardKeyword.Power) &&
+                !cardData.CurrentCard.Keywords.Contains(eCardKeyword.StoryKeep))
             {
                 CardsToDestroy.Add(cardData);
             }
             else
             {
-                CardsToKeep.Add(cardData);
+                if (cardData.CurrentCard.Keywords.Contains(eCardKeyword.StoryKeep))
+                {
+                    if (Game.Instance.EndOfRound)
+                    {
+                        CardsToDestroy.Add(cardData);
+                    }
+                    else
+                    {
+                        CardsToKeep.Add(cardData);
+
+                    }
+                }
+                else
+                {
+                    CardsToKeep.Add(cardData);
+                }
             }
         }
 

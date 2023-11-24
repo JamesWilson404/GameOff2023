@@ -10,7 +10,7 @@ public class BasicResourceCard : Card
     public int Value;
 
 
-    public override void OnPlace()
+    public override void OnPlace(UIGameCard gameCard)
     {
         Game.Instance.AwardResource(AwardPolarity, Value);
     }

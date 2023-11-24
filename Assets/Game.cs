@@ -169,6 +169,7 @@ public class Game : MonoBehaviour
                     ZoomLevel = 3;
                     ZoomLerpRate = 0.05f;
                     HandManager.Instance.DrawHand();
+                    StoryCard.storyData.OnTurnStart();
                 }
                 if (TimeInState > 2f)
                 {
@@ -241,6 +242,7 @@ public class Game : MonoBehaviour
                     CurrentStory = PickNewStory();
                     StoryCard.StartStory(CurrentStory);
                     StoriesRevealed++;
+                    StoryCard.storyData.OnRoundStart();
                 }
                 if (TimeInState > 6f)
                 {
@@ -426,7 +428,7 @@ public class Game : MonoBehaviour
     
     public void RewardPlayed()
     {
-        HandManager.Instance.DiscardHand();
+        HandManager.Instance.DestroyHand();
         SwitchToState(eTurnState.StartOfRound);
     }
 

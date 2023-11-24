@@ -8,9 +8,10 @@ using UnityEngine;
 public class GameEvents
 {
 
-    public void OnCardPlayed(Card card)
+    public void OnCardPlayed(UIGameCard gameCard, Card card)
     {
-        card.OnPlace();
+        card.OnPlace(gameCard);
+
     }
 
 

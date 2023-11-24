@@ -11,4 +11,12 @@ public abstract class StoryData : ScriptableObject
     public Card[] GoodRewards;
     public Card[] BadRewards;
 
+
+
+    public abstract void OnTurnStart();
+    public abstract void OnRoundStart();
+
+
+
+
 }

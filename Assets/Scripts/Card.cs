@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 public enum eCardPolarity
 {
@@ -17,6 +17,7 @@ public enum eCardKeyword
     Power,
     Solace,
     Resilience,
+    StoryKeep,
 
 }
 
@@ -34,7 +35,8 @@ public abstract class Card : ScriptableObject
     public List<eCardKeyword> Keywords;
 
 
-    public abstract void OnPlace();
 
+
+    public abstract void OnPlace(UIGameCard gameCard);
 
 }

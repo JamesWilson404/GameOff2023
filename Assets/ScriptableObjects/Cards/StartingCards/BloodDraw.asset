@@ -9,14 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceff8552729e7944a87d18eb2529100f, type: 3}
-  m_Name: BasicNightmare
+  m_Script: {fileID: 11500000, guid: 08befe2e7c60ff84098cb3068f3c27e2, type: 3}
+  m_Name: BloodDraw
   m_EditorClassIdentifier: 
-  CardName: Pain
-  CardDescription: +1 Nightmare
-  cost: 3
-  polarity: 1
+  CardName: Witness
+  CardDescription: 'Draw a Card
+
+    If this created a blood tile; Draw 2 more.'
+  cost: 8
+  polarity: 0
   CardArt: {fileID: 21300000, guid: a0a20f006b2a54049b327fdbe1b899d0, type: 3}
   Keywords: 
-  AwardPolarity: 1
-  Value: 1
+  AwardPolarity: 0
+  Value: 0

@@ -9,12 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2839248b8626cd42a569004e88da148, type: 3}
-  m_Name: Solace
+  m_Script: {fileID: 11500000, guid: 9a82273a5fc8a5145899ed41c7b5a12e, type: 3}
+  m_Name: Procrastinate
   m_EditorClassIdentifier: 
-  CardName: Solace
-  CardDescription: (Drawn when your deck is empty)
-  cost: 0
+  CardName: procrastinate
+  CardDescription: 'Discard a random Card
+
+    Gain 3 Hope'
+  cost: 5
   polarity: 0
-  CardArt: {fileID: 21300000, guid: ee22839ca49edf24f8937199a3a00141, type: 3}
-  Keywords: 0000000001000000
+  CardArt: {fileID: 21300000, guid: c0e920e418346294c92de3a68abc74b7, type: 3}
+  Keywords: 
