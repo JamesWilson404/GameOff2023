@@ -11,6 +11,8 @@ public class BoardManager : MonoBehaviour
     [SerializeField] Tilemap gameBoard;
     [SerializeField] GameObject CardsParent;
     [SerializeField] GameObject ShopParent;
+
+
     public GameObject BloodParent;
 
     public Dictionary<Vector2Int, UICard> CardLookup;
@@ -114,6 +116,32 @@ public class BoardManager : MonoBehaviour
         return DeckPosition;
     }
 
+    internal void PlayTrappedEffect()
+    {
+        StartCoroutine(TrappedDeck());
+    }
+
+    public IEnumerator TrappedDeck()
+    {
+
+        Vector2Int[] surroundingOffsets = new Vector2Int[]
+{
+            new Vector2Int(-1, 1), new Vector2Int(0, 1), new Vector2Int(1, 1),
+            new Vector2Int(-1, 0),                         new Vector2Int(1, 0),
+            new Vector2Int(-1, -1), new Vector2Int(0, -1), new Vector2Int(1, -1),
+};
+        var Tombstone = ((StoryData_Trapped)Game.Instance.CurrentStory).Tombstone;
+
+        foreach (var item in surroundingOffsets)
+        {
+            yield return new WaitForSeconds(0.1f);
+            var nextLocation = BoardManager.Instance.DeckPosition + item;
+            BoardManager.Instance.PlayCard(Tombstone, nextLocation);
+        }
+    }
+
+
+
     private void FindStartingDeck()
     {
         foreach (var pos in gameBoard.cellBounds.allPositionsWithin)
@@ -136,7 +164,9 @@ public class BoardManager : MonoBehaviour
 
     public void PlaceCard(Vector2Int position, UIGameCard card)
     {
-        if (!BloodTiles.ContainsKey(position) && card != null && !card.CurrentCard.Keywords.Contains(eCardKeyword.Painless))
+        if (!BloodTiles.ContainsKey(position) && card != null &&
+            !card.CurrentCard.Keywords.Contains(eCardKeyword.Painless) &&
+            !card.CurrentCard.Keywords.Contains(eCardKeyword.StoryPainless))
         {
             //  New Blood Tile
             BloodTiles.Add(position, card);
@@ -153,7 +183,7 @@ public class BoardManager : MonoBehaviour
     public bool TryPlaceCard(Vector3 mousePos, Card cardToPlace)
     {
         var Coords2D = GetNearestTile(mousePos);
-        if (IsPlacementValid(Coords2D))
+        if (IsPlacementValid(Coords2D, cardToPlace.Keywords.Contains(eCardKeyword.Cathartic)))
         {
             var placementPosition = GetCellCenter(Coords2D);
             var newCard = Instantiate(NewCardPrefab, placementPosition, Quaternion.identity, CardsParent.transform);
@@ -224,18 +254,53 @@ public class BoardManager : MonoBehaviour
 
     public bool IsPlacementValid(Vector2Int placementPosition)
     {
+        return IsPlacementValid(placementPosition, false);
+    }
+
+
+    public bool IsPlacementValid(Vector2Int placementPosition, bool cathartic)
+    {
         if (CardLookup.ContainsKey(placementPosition))
         {
             return false;
         }
 
+        if (cathartic)
+        {
+            if (BloodTiles.ContainsKey(placementPosition))
+            {
+                return false;
+            }
+        }
+
+        bool adjecentToSomething = false;
+
         foreach (var item in AdjacencyLookup)
         {
             if (CardLookup.ContainsKey(placementPosition + item))
             {
-                return true;
+                if (cathartic)
+                {
+                    adjecentToSomething = true;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else if (cathartic && BloodTiles.ContainsKey(placementPosition + item))
+            {
+                adjecentToSomething = true;
             }
         }
+
+
+        if (cathartic && adjecentToSomething)
+        {
+            return true;
+        }
+
+
         return false;
     }
 

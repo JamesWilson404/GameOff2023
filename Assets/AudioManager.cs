@@ -17,6 +17,9 @@ public enum SoundFX
     BONE_SNAP,
     BELL,
     WRITING,
+    GULP,
+    UIHOVER,
+    UICLICK,
 }
 
 public class AudioManager : MonoBehaviour
@@ -33,6 +36,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip BoneSnap;
     public AudioClip Bell;
     public AudioClip Writting;
+    public AudioClip Gulp;
+    public AudioClip Hover;
+    public AudioClip Click;
     
 
 
@@ -96,6 +102,18 @@ public class AudioManager : MonoBehaviour
             case SoundFX.WRITING:
                 source.PlayOneShot(Writting);
                 break;
+            case SoundFX.GULP:
+                source.PlayOneShot(Gulp);
+                break;
+
+            case SoundFX.UIHOVER:
+                source.PlayOneShot(Hover);
+                break;
+
+            case SoundFX.UICLICK:
+                source.PlayOneShot(Click);
+                break;
+
 
             default:
                 break;

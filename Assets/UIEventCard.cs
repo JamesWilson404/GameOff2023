@@ -40,11 +40,13 @@ public class UIEventCard : UICard, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         EventManager.Instance.CardHovered(this);
+        Game.Instance.ShopTooltip.CardHovered(CurrentCard, gameObject);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         EventManager.Instance.CardUnHovered(this);
+        Game.Instance.ShopTooltip.CardUnHovered();
     }
 
     internal void StopDragging()

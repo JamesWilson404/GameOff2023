@@ -21,3 +21,4 @@ MonoBehaviour:
   BadRewards:
   - {fileID: 11400000, guid: f317da8ac90bcb441a76487d2076ed5a, type: 2}
   - {fileID: 11400000, guid: f317da8ac90bcb441a76487d2076ed5a, type: 2}
+  Tombstone: {fileID: 11400000, guid: c577a6d78b9fac7478e777d66d909002, type: 2}

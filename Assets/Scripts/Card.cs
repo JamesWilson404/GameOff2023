@@ -18,7 +18,8 @@ public enum eCardKeyword
     Solace,
     Resilience,
     StoryKeep,
-
+    StoryPainless,
+    Story,
 }
 
 public abstract class Card : ScriptableObject

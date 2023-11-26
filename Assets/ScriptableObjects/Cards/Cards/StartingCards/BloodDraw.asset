@@ -13,12 +13,10 @@ MonoBehaviour:
   m_Name: BloodDraw
   m_EditorClassIdentifier: 
   CardName: Witness
-  CardDescription: 'Draw a Card
+  CardDescription: 'Draw a Card;
 
     If this created a blood tile; Draw 2 more.'
   cost: 8
   polarity: 0
-  CardArt: {fileID: 21300000, guid: a0a20f006b2a54049b327fdbe1b899d0, type: 3}
+  CardArt: {fileID: 21300000, guid: f54999d2570542d45b75aee5e5b038f0, type: 3}
   Keywords: 
-  AwardPolarity: 0
-  Value: 0

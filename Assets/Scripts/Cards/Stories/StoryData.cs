@@ -16,6 +16,7 @@ public abstract class StoryData : ScriptableObject
     public abstract void OnTurnStart();
     public abstract void OnRoundStart();
 
+    public abstract void OnTurnEnd();
 
 
 

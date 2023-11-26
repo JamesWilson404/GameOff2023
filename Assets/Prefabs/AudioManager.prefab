@@ -153,3 +153,6 @@ MonoBehaviour:
   BoneSnap: {fileID: 8300000, guid: dcff6b7e4fd5245459c105712c4654d4, type: 3}
   Bell: {fileID: 8300000, guid: 0804e35cd9e52e3478fb6c17ab3044c4, type: 3}
   Writting: {fileID: 8300000, guid: 5833833333233894084e8edb2a0c3609, type: 3}
+  Gulp: {fileID: 8300000, guid: 3741f0cc2e141f54296db32bdfd895bf, type: 3}
+  Hover: {fileID: 8300000, guid: cad2ee0c7958c7940bfd5e3a5e01b785, type: 3}
+  Click: {fileID: 8300000, guid: 3749697b4d8becc42971eb87d2345df1, type: 3}

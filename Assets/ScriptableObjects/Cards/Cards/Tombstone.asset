@@ -17,4 +17,4 @@ MonoBehaviour:
   cost: 0
   polarity: 1
   CardArt: {fileID: 21300000, guid: 495bcbd7175f6bf489b24973d9b240ef, type: 3}
-  Keywords: 06000000
+  Keywords: 0600000007000000

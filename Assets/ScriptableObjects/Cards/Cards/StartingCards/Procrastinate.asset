@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a82273a5fc8a5145899ed41c7b5a12e, type: 3}
   m_Name: Procrastinate
   m_EditorClassIdentifier: 
-  CardName: procrastinate
-  CardDescription: 'Discard a random Card
+  CardName: Procrastinate
+  CardDescription: 'Discard a random Card.
 
     Gain 3 Hope'
   cost: 5

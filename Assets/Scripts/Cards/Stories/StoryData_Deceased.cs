@@ -22,4 +22,8 @@ public class StoryData_Deceased : StoryData
             BoardManager.Instance.PlayCard(Tombstone, randLocation);
         }
     }
+
+    public override void OnTurnEnd()
+    {
+    }
 }

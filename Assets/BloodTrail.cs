@@ -14,6 +14,8 @@ public class BloodTrail : MonoBehaviour
 
     public float CurrentSize = 0f;
 
+    public float gravityMod = 1f;
+
     TrailRenderer tr;
     Rigidbody2D rb;
 
@@ -57,7 +59,7 @@ public class BloodTrail : MonoBehaviour
     {
         if (rb.gravityScale > 0)
         {
-            rb.gravityScale = Mathf.Clamp(rb.gravityScale - (Time.deltaTime * 0.05f),0,1);
+            rb.gravityScale = gravityMod * Mathf.Clamp(rb.gravityScale - (Time.deltaTime * 0.05f),0,1);
         }
     }
 

@@ -67,6 +67,12 @@ public class Game : MonoBehaviour
     public int BossMaxHealth = 100;
     public int BossHealth = 100;
 
+    public int hopeThisTurn = 0;
+    public int nightmareThisTurn = 0;
+
+    public TooltipManager GameTooltip;
+    public TooltipManager ShopTooltip;
+
     private void Awake()
     {
         if (Game.Instance == null)
@@ -166,10 +172,15 @@ public class Game : MonoBehaviour
             case eTurnState.StartOfTurn:
                 if (TimeInState == 0)
                 {
+                    hopeThisTurn = 0;
+                    nightmareThisTurn = 0;
+                    
                     ZoomLevel = 3;
                     ZoomLerpRate = 0.05f;
                     HandManager.Instance.DrawHand();
                     StoryCard.storyData.OnTurnStart();
+
+
                 }
                 if (TimeInState > 2f)
                 {
@@ -242,10 +253,10 @@ public class Game : MonoBehaviour
                     CurrentStory = PickNewStory();
                     StoryCard.StartStory(CurrentStory);
                     StoriesRevealed++;
-                    StoryCard.storyData.OnRoundStart();
                 }
                 if (TimeInState > 6f)
                 {
+                    StoryCard.storyData.OnRoundStart();
                     SwitchToState(eTurnState.StartOfTurn);
                 }
 
@@ -270,6 +281,7 @@ public class Game : MonoBehaviour
 
                 if (TimeInState == 0)
                 {
+                    CurrentStory.OnTurnEnd();
                     EndTurn();
                 }
                 if (TimeInState > 2.5f && !EndOfRound)

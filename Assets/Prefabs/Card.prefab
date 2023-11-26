@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 6503590285898418672}
   - component: {fileID: 3545828776614425257}
   - component: {fileID: 5458462694307803943}
+  - component: {fileID: 7556651854721354060}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -259,6 +260,51 @@ MonoBehaviour:
   RequiresBloodTrail: 0
   BloodTrailPrefab: {fileID: 3809928361793399407, guid: 25c1303ec0cdff74aa89f696f4df6a5d, type: 3}
   NumberOfTrails: 20
+--- !u!61 &7556651854721354060
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4233017779461347965}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.57, y: 0.79}
+  m_EdgeRadius: 0
 --- !u!1 &5898470743480126615
 GameObject:
   m_ObjectHideFlags: 0

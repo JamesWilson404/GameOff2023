@@ -272,3 +272,4 @@ MonoBehaviour:
   minSize: 0.1
   maxSize: 1
   CurrentSize: 0
+  gravityMod: 1

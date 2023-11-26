@@ -18,7 +18,7 @@ public class HandManager : MonoBehaviour
 
     public GameObject PlacementCard;
     public GameObject CardToPlace;
-    bool Placing = false;
+    public bool Placing = false;
 
     [SerializeField] CanvasGroup HandGroup;
     [SerializeField] CanvasGroup ReturnGroup;
@@ -27,6 +27,7 @@ public class HandManager : MonoBehaviour
     public GameObject DiscardParent;
 
     public int HandCount = 0;
+    public float TimeWithout = 0;
 
     private void Awake()
     {
@@ -153,15 +154,24 @@ public class HandManager : MonoBehaviour
     {
         var mousePosition = gameCamera.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
+
+
+        Card card = null;
+        if (CardToPlace != null)
+        {
+            card = CardToPlace.GetComponent<UIHandCard>().CurrentCard;
+        }
+
+
         if (Game.Instance.TurnState == Game.eTurnState.InTurn)
         {
             UpdateHandCount();
         }
 
-        if (Placing)
+        if (Placing && card != null)
         {
             var nearestTilePos = BoardManager.Instance.GetNearestTile(mousePosition);
-            if (BoardManager.Instance.IsPlacementValid(nearestTilePos))
+            if (BoardManager.Instance.IsPlacementValid(nearestTilePos, card.Keywords.Contains(eCardKeyword.Cathartic)))
             {
                 mousePosition = BoardManager.Instance.GetCellCenter(nearestTilePos);
             }
@@ -174,7 +184,6 @@ public class HandManager : MonoBehaviour
                 PlacementCard.SetActive(false);
                 HandGroup.alpha = 1;
                 ReturnGroup.alpha = 0;
-                var card = CardToPlace.GetComponent<UIHandCard>().CurrentCard;
 
                 if (BoardManager.Instance.TryPlaceCard(mousePosition, card))
                 {
@@ -217,9 +226,17 @@ public class HandManager : MonoBehaviour
     private void UpdateHandCount()
     {
         HandCount = transform.childCount;
-        if (HandCount == 0)
+        if (HandCount == 0 && Game.Instance.TurnState == Game.eTurnState.InTurn)
         {
-            Game.Instance.UIEndTurnPressed();
+            TimeWithout += Time.deltaTime;
+            if (TimeWithout > 1f)
+            {
+                Game.Instance.UIEndTurnPressed();
+            }
+        }
+        else
+        {
+            TimeWithout = 0;
         }
     }
 
@@ -249,6 +266,12 @@ public class HandManager : MonoBehaviour
 
     private void DiscardCard(GameObject gameObject)
     {
+
+        if (CurrentCard == gameObject)
+        {
+            CurrentCard = null;
+        }
+
         foreach (Transform item in transform)
         {
             if (item.gameObject == gameObject)
@@ -260,6 +283,7 @@ public class HandManager : MonoBehaviour
                 return;
             }
         }
+
     }
 
     private void SpawnDiscard(GameObject g, Card gCard)
