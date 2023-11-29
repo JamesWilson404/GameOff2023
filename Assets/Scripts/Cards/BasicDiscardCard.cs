@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Cards/Basic Discard Card")]
 public class BasicDiscardCard : Card
 {
+    public override void OnDiscard()
+    {
+    }
 
     public override void OnPlace(UIGameCard gameCard)
     {

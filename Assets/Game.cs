@@ -26,12 +26,13 @@ public class Game : MonoBehaviour
         Boss,
         GameOver,
         GameWon,
+        Preamble
     }
 
 
 
     [HideInInspector] public float TimeInState = 0;
-    public eTurnState TurnState = eTurnState.PreStart;
+    public eTurnState TurnState = eTurnState.Preamble;
 
     public System.Random rand;
 
@@ -53,12 +54,14 @@ public class Game : MonoBehaviour
     public bool EndOfRound = false;
     public int HopeSubmitted = 0;
 
-    public StoryData[] Stories;
+    public StoryData[] StoriesAct1;
+    public StoryData[] StoriesAct2;
+    public StoryData[] StoriesAct3;
     public StoryData CurrentStory;
 
     public GameEvents EventManager;
     public int StoriesRevealed = 0;
-    int MaxStories = 1;
+    int MaxStories = 3;
 
     public bool inBoss = false;
     public int turnsInBoss = 0;
@@ -73,6 +76,12 @@ public class Game : MonoBehaviour
     public TooltipManager GameTooltip;
     public TooltipManager ShopTooltip;
 
+    public MusicTargetVolume GameMusic;
+
+    public Card[] HopeCards;
+    public Card[] FearCards;
+
+
     private void Awake()
     {
         if (Game.Instance == null)
@@ -85,7 +94,7 @@ public class Game : MonoBehaviour
             return;
         }
 
-        rand = new System.Random((int) DateTime.Now.TimeOfDay.TotalSeconds);
+        rand = new System.Random(Guid.NewGuid().GetHashCode());
         EventManager = new GameEvents();
     }
 
@@ -113,11 +122,13 @@ public class Game : MonoBehaviour
         if (polarity == eCardPolarity.Hope)
         {
             HopeTokens += value;
+            hopeThisTurn += value;
             AudioManager.Instance.PlaySound(SoundFX.HOPE);
         }
         else if (polarity == eCardPolarity.Blood)
         {
             BloodTokens += value;
+            nightmareThisTurn += value;
             AudioManager.Instance.PlaySound(SoundFX.BlOOD_DRIP);
         }
 
@@ -138,9 +149,17 @@ public class Game : MonoBehaviour
                         GameUI.SetScaleTurnCount(MaxTurnsInBoss - turnsInBoss);
                         AudioManager.Instance.PlaySound(SoundFX.BELL);
                     }
+                    if (StoriesRevealed > 0)
+                    {
+                        GameMusic.SetVolume(0.1f, 0.01f);
+                    }
+                    else
+                    {
+                        GameMusic.SetVolume(0.0f, 0.01f);
+                    }
                 }
 
-                if (TimeInState > 3f)
+                if (TimeInState > 5f)
                 {
                     if (StoriesRevealed < MaxStories)
                     {
@@ -155,9 +174,27 @@ public class Game : MonoBehaviour
                 
                 break;
 
+            case eTurnState.Preamble:
+                if (TimeInState == 0)
+                {
+
+                }
+
+                if (TimeInState > 2f)
+                {
+
+                }
+
+                break;
+
             case eTurnState.Boss:
                 if (TimeInState == 0)
                 {
+                    if (!inBoss)
+                    {
+                        VoiceManager.Instance.PlaySound(VoiceFX.BOSSINTRO);
+                    }
+
                     inBoss = true;
                     GameUI.LoadEventUI(eEventType.Boss);
                     GameUI.HideResources();
@@ -174,12 +211,12 @@ public class Game : MonoBehaviour
                 {
                     hopeThisTurn = 0;
                     nightmareThisTurn = 0;
+                    HandManager.Instance.CardDrawnThisTurn = 0;
                     
                     ZoomLevel = 3;
                     ZoomLerpRate = 0.05f;
                     HandManager.Instance.DrawHand();
                     StoryCard.storyData.OnTurnStart();
-
 
                 }
                 if (TimeInState > 2f)
@@ -192,6 +229,7 @@ public class Game : MonoBehaviour
             case eTurnState.GameOver:
                 if (TimeInState == 0)
                 {
+                    VoiceManager.Instance.PlaySound(VoiceFX.BOSSLOSE);
                     Debug.Log("GAME LOST");
                 }
                 if (TimeInState > 2f)
@@ -203,6 +241,7 @@ public class Game : MonoBehaviour
             case eTurnState.GameWon:
                 if (TimeInState == 0)
                 {
+                    VoiceManager.Instance.PlaySound(VoiceFX.BOSSWIN);
                     Debug.Log("GAME WON");
                 }
                 if (TimeInState > 2f)
@@ -264,7 +303,7 @@ public class Game : MonoBehaviour
             case eTurnState.InTurn:
                 if (TimeInState == 0)
                 {
-
+                    GameMusic.SetVolume(0.3f, 0.005f);
                 }
 
 
@@ -284,7 +323,7 @@ public class Game : MonoBehaviour
                     CurrentStory.OnTurnEnd();
                     EndTurn();
                 }
-                if (TimeInState > 2.5f && !EndOfRound)
+                if (TimeInState > 3.5f && !EndOfRound)
                 {
                     if (inBoss)
                     {
@@ -334,7 +373,23 @@ public class Game : MonoBehaviour
                 }
                 if (TimeInState > 3f)
                 {
-                    StartCoroutine(BoardManager.Instance.PresentShop());
+                    switch (rand.Next(3))
+                    {
+                        case 0:
+                            StartCoroutine(BoardManager.Instance.PresentShop());
+                            break;
+                        case 1:
+                            StartCoroutine(BoardManager.Instance.PresentHopePick());
+                            break;
+                        case 2:
+                            StartCoroutine(BoardManager.Instance.PresentFearPick());
+                            break;
+                        default:
+                            StartCoroutine(BoardManager.Instance.PresentShop());
+                            break;
+                    }
+
+
                     SwitchToState(eTurnState.InEvent);
                 }
                 break;
@@ -385,17 +440,20 @@ public class Game : MonoBehaviour
 
         if (HopeSubmitted == BloodTokens)
         {
+            VoiceManager.Instance.PlaySound(VoiceFX.HOPE3);
             SwitchToState(eTurnState.StartOfRound);
         }
         else if (HopeSubmitted > BloodTokens)
         {
             HandManager.Instance.AddCardToHand(CurrentStory.GoodRewards[0]);
             HandManager.Instance.AddCardToHand(CurrentStory.GoodRewards[1]);
+            VoiceManager.Instance.PlaySound((VoiceFX)(7 + rand.Next(3)));
         }
         else if (BloodTokens > HopeSubmitted)
         {
             HandManager.Instance.AddCardToHand(CurrentStory.BadRewards[0]);
             HandManager.Instance.AddCardToHand(CurrentStory.BadRewards[1]);
+            VoiceManager.Instance.PlaySound((VoiceFX)(rand.Next(4)));
         }
 
         HopeSubmitted = 0;
@@ -424,7 +482,24 @@ public class Game : MonoBehaviour
 
     private StoryData PickNewStory()
     {
-        return Stories[rand.Next(Stories.Length)];
+        StoryData s = null;
+        switch (StoriesRevealed)
+        {
+            case 0:
+                s = StoriesAct1[rand.Next(StoriesAct1.Length)];
+                break;
+            case 1:
+                s = StoriesAct2[rand.Next(StoriesAct2.Length)];
+                break;
+            case 2:
+                s = StoriesAct3[rand.Next(StoriesAct3.Length)];
+                break;
+            default:
+                s = StoriesAct1[rand.Next(StoriesAct1.Length)];
+                break;
+        }
+        return s;
+
     }
 
     public void SubmitJudgement()
@@ -435,6 +510,12 @@ public class Game : MonoBehaviour
 
         GameUI.FinishEvent();
         SwitchToState(eTurnState.PostJudgement);
+    }
+
+    public void StartGame()
+    {
+        SwitchToState(eTurnState.PreStart);
+        DeckManager.Instance.LandDeck();
     }
 
     
@@ -489,6 +570,8 @@ public class Game : MonoBehaviour
     {
         StartCoroutine(BoardManager.Instance.AwardBloodTokens());
         StartCoroutine(BoardManager.Instance.CleanUpCards());
+
+        BoardManager.Instance.BloodTileGenerated = 0;
     }
 
 

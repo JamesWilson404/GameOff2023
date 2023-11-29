@@ -23,4 +23,12 @@ public class StoryData_Trapped : StoryData
     public override void OnTurnEnd()
     {
     }
+
+    public override void OnCardDiscarded(Card card)
+    {
+    }
+
+    public override void OnCardPlayed(Card card)
+    {
+    }
 }

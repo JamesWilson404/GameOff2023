@@ -51,6 +51,7 @@ public class GameUI : MonoBehaviour
         else
         {
             TheScalesUI.TurnsText.text = "Judgement!";
+            VoiceManager.Instance.PlaySound(VoiceFX.JUDGEMENT);
         }
     }
 

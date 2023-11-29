@@ -115,6 +115,16 @@ public class EventManager : MonoBehaviour
 
     private bool TryPurchaseCard()
     {
+        if (BoardManager.Instance.CurrentEvent == eEventType.BadCardPick || BoardManager.Instance.CurrentEvent == eEventType.GoodCardPick)
+        {
+            DeckManager.Instance.AddCardToDeck(CurrentCard.CurrentCard);
+            Destroy(CurrentCard.gameObject);
+            Debug.Log("ADDED");
+            BoardManager.Instance.FinishEvent();
+            return true;
+        }
+
+
         if (Game.Instance.TryPurchase(CurrentCard.CurrentCard.polarity, CurrentCard.CurrentCard.cost))
         {
             DeckManager.Instance.AddCardToDeck(CurrentCard.CurrentCard);

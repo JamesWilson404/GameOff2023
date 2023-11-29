@@ -11,7 +11,7 @@ public class GameEvents
     public void OnCardPlayed(UIGameCard gameCard, Card card)
     {
         card.OnPlace(gameCard);
-
+        Game.Instance.CurrentStory.OnCardPlayed(card);
     }
 
 
@@ -31,5 +31,11 @@ public class GameEvents
                     break;
             }
         }
+    }
+
+    internal void OnCardDiscarded(Card card)
+    {
+        card.OnDiscard();
+        Game.Instance.CurrentStory.OnCardDiscarded(card);
     }
 }

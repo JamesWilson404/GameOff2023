@@ -9,4 +9,8 @@ public class BlankCard : Card
     {
 
     }
+
+    public override void OnDiscard()
+    {
+    }
 }

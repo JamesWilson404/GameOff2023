@@ -156,3 +156,4 @@ MonoBehaviour:
   Gulp: {fileID: 8300000, guid: 3741f0cc2e141f54296db32bdfd895bf, type: 3}
   Hover: {fileID: 8300000, guid: cad2ee0c7958c7940bfd5e3a5e01b785, type: 3}
   Click: {fileID: 8300000, guid: 3749697b4d8becc42971eb87d2345df1, type: 3}
+  Thud: {fileID: 8300000, guid: 1eb546b2be9a41d44a13490671617826, type: 3}

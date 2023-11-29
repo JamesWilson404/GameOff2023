@@ -24,6 +24,8 @@ public class DeckManager : MonoBehaviour
     public GameObject StoryCard;
     public SpriteRenderer DeckSprite;
 
+    Animator animator;
+
     private void Awake()
     {
         if (DeckManager.Instance == null)
@@ -38,6 +40,7 @@ public class DeckManager : MonoBehaviour
 
         Deck = new List<Card>();
         DiscardPile = new List<Card>();
+        animator = GetComponent<Animator>();
 
         foreach (var item in StartingDeck.Cards)
         {
@@ -45,11 +48,21 @@ public class DeckManager : MonoBehaviour
         }
     }
 
+    public void LandDeck()
+    {
+        animator.SetTrigger("Start");
+        DeckSprite.gameObject.SetActive(true);
+    }
+
     private void Start()
     {
         UpdateDeckUI();
     }
 
+    public void DeckLandedAudio()
+    {
+        AudioManager.Instance.PlaySound(SoundFX.THUD);
+    }
 
     public void UpdateDeckUI()
     {

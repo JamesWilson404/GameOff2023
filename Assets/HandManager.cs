@@ -29,6 +29,10 @@ public class HandManager : MonoBehaviour
     public int HandCount = 0;
     public float TimeWithout = 0;
 
+    public int CardDrawnThisTurn = 0;
+    public int CardDrawLimit = 100;
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -86,16 +90,23 @@ public class HandManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             DrawCard();
         }
+        
     }
 
     public void DrawCard()
     {
+        if (CardDrawnThisTurn >= CardDrawLimit)
+        {
+            return;
+        }
+
         var newCard = DeckManager.Instance.DrawCard();
         if (DeckManager.Instance.GetDeckCount() == 0)
         {
             Game.Instance.EndOfRound = true;
         }
         AddCardToHand(newCard);
+        CardDrawnThisTurn++;
     }
 
     public void AddCardToHand(Card nextCard)
@@ -139,6 +150,7 @@ public class HandManager : MonoBehaviour
         var anim = cardCanvas.transform.GetComponent<Animator>();
         anim.SetBool("Selected", false);
         anim.Play("Default");
+        Game.Instance.GameTooltip.HandCardUnhovered();
     }
 
     private void HoverCard(Canvas cardCanvas)
@@ -146,6 +158,7 @@ public class HandManager : MonoBehaviour
         cardCanvas.sortingOrder = 99;
         cardCanvas.transform.localScale = Vector3.one * 1.2f;
         cardCanvas.transform.GetComponent<Animator>().SetBool("Selected", true);
+        Game.Instance.GameTooltip.HandCardHovered(cardCanvas.GetComponent<UIHandCard>().CurrentCard.Keywords, gameObject);
     }
 
 
@@ -276,7 +289,9 @@ public class HandManager : MonoBehaviour
         {
             if (item.gameObject == gameObject)
             {
-                var gCard = gameObject.GetComponent<UIHandCard>().CurrentCard;
+                var uiHand = gameObject.GetComponent<UIHandCard>();
+                var gCard = uiHand.CurrentCard;
+                Game.Instance.EventManager.OnCardDiscarded(gCard);
                 DeckManager.Instance.AddToDiscard(gCard);
                 SpawnDiscard(gameObject, gCard);
                 Destroy(gameObject);

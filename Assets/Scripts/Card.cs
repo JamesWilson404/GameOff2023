@@ -39,5 +39,6 @@ public abstract class Card : ScriptableObject
 
 
     public abstract void OnPlace(UIGameCard gameCard);
+    public abstract void OnDiscard();
 
 }

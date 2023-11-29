@@ -9,6 +9,9 @@ public class BasicResourceCard : Card
     public eCardPolarity AwardPolarity;
     public int Value;
 
+    public override void OnDiscard()
+    {
+    }
 
     public override void OnPlace(UIGameCard gameCard)
     {

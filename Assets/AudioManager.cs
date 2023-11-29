@@ -20,6 +20,7 @@ public enum SoundFX
     GULP,
     UIHOVER,
     UICLICK,
+    THUD,
 }
 
 public class AudioManager : MonoBehaviour
@@ -39,7 +40,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip Gulp;
     public AudioClip Hover;
     public AudioClip Click;
-    
+    public AudioClip Thud;
 
 
     private AudioSource source;
@@ -73,6 +74,10 @@ public class AudioManager : MonoBehaviour
 
             case SoundFX.GHOUL:
                 source.PlayOneShot(Ghoul);
+                break;
+
+            case SoundFX.THUD:
+                source.PlayOneShot(Thud);
                 break;
 
             case SoundFX.HOPE:

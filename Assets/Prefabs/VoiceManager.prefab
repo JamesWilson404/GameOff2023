@@ -142,14 +142,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TheDeceased: {fileID: 8300000, guid: b55bea54413213a4cb9be85c7f44dfc2, type: 3}
-  CardBurn: {fileID: 0}
-  BloodSplat: {fileID: 0}
-  CantAfford: {fileID: 0}
-  Ghoul: {fileID: 0}
-  Nightmare: {fileID: 0}
-  Hope: {fileID: 0}
-  BloodDrip: {fileID: 0}
-  Boop: {fileID: 0}
-  BoneSnap: {fileID: 0}
-  Bell: {fileID: 0}
-  Writting: {fileID: 0}
+  TheInnocent: {fileID: 8300000, guid: d499e56e5b7f5bd4b86d9d1d0cc588a9, type: 3}
+  TheAddicted: {fileID: 8300000, guid: 7ddd0826e410f6f4697765bec874fa96, type: 3}
+  TheRejected: {fileID: 8300000, guid: 0dcf4a85f17ebc841b3d2de68444d56c, type: 3}
+  TheTrapped: {fileID: 8300000, guid: 79ce3b3a8c5ccdf4ab04c01247297b2b, type: 3}
+  TheDeranged: {fileID: 8300000, guid: cefdc2c0f83956340af531aa92000a09, type: 3}
+  TheDemons: {fileID: 8300000, guid: 0e831c1cd4c7e394bbe0a633c6086827, type: 3}
+  TheGreedy: {fileID: 8300000, guid: 8066b5fdf564e6b469a0ac5866804aea, type: 3}
+  TheIsolated: {fileID: 8300000, guid: 0f6973694999a6f4580dc9786cf57f07, type: 3}
+  Nightmare1: {fileID: 8300000, guid: f37539e2a0feef542891c24d48d5724d, type: 3}
+  Nightmare2: {fileID: 8300000, guid: c56a7cf7106c0bb48ba69aa0afd0b30d, type: 3}
+  Nightmare3: {fileID: 8300000, guid: 4c4b39490ba6c4e498b031ce1fb3ff5b, type: 3}
+  Nightmare4: {fileID: 8300000, guid: 45fb695ff8f948e46b5213103359c117, type: 3}
+  Intro1: {fileID: 8300000, guid: cbd42bba1faba7f43a7e453f8d62670c, type: 3}
+  Intro2: {fileID: 8300000, guid: feeff2e10e5a8f84f95f3e414b877d80, type: 3}
+  Intro3: {fileID: 8300000, guid: 3c0c610dc46e9b04b9720160d1c7bd73, type: 3}
+  Hope1: {fileID: 8300000, guid: f15133f7ebcaf0b40b29437836a7d0fb, type: 3}
+  Hope2: {fileID: 8300000, guid: 72c20cefe1c407647bc369355a7a34f1, type: 3}
+  Hope3: {fileID: 8300000, guid: 85c929da03ab380488f9d0d7144a5c11, type: 3}
+  BossIntro: {fileID: 8300000, guid: 070e2a2de94babc4e959358462c2c9f9, type: 3}
+  BossLose: {fileID: 8300000, guid: cfbcc294766ceb541975be081128a7be, type: 3}
+  BossWin: {fileID: 8300000, guid: 7579a90970d5eab43ae0e9ac45aba218, type: 3}
+  Judgement: {fileID: 8300000, guid: ec9a7950d347fc04c90d138ca9b898c8, type: 3}

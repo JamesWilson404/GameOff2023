@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class StoryCard : MonoBehaviour
+public class StoryCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Sprite TestSprite;
     public Sprite ScaleSprite;
@@ -52,6 +53,23 @@ public class StoryCard : MonoBehaviour
     public void RevealStorySprite()
     {
         CardIcon.sprite = ScaleSprite;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Game.Instance.GameTooltip.CardUnHovered();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (Game.Instance.CurrentStory == null)
+        {
+            return;
+        }
+        if (Game.Instance.TurnState == Game.eTurnState.InTurn || Game.Instance.TurnState == Game.eTurnState.InEvent)
+        {
+            Game.Instance.GameTooltip.CardHovered(Game.Instance.CurrentStory, gameObject);
+        }
     }
 
 }

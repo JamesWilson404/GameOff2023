@@ -33,7 +33,14 @@ public class UIEventCard : UICard, IPointerEnterHandler, IPointerExitHandler
         }
 
         CostText.text = newCard.cost.ToString();
-
+        if (BoardManager.Instance.CurrentEvent == eEventType.BadCardPick || BoardManager.Instance.CurrentEvent == eEventType.GoodCardPick)
+        {
+            canvasGroup.gameObject.SetActive(false);
+        }
+        else
+        {
+            canvasGroup.gameObject.SetActive(true);
+        }
     }
 
 
@@ -54,7 +61,14 @@ public class UIEventCard : UICard, IPointerEnterHandler, IPointerExitHandler
         CardShadow.sortingLayerName = "Default";
         CardBacking.sortingLayerName = "Default";
         CardSprite.sortingLayerName = "Default";
-        canvasGroup.gameObject.SetActive(true);
+        if (BoardManager.Instance.CurrentEvent == eEventType.BadCardPick || BoardManager.Instance.CurrentEvent == eEventType.GoodCardPick)
+        {
+            canvasGroup.gameObject.SetActive(false);
+        }
+        else
+        {
+            canvasGroup.gameObject.SetActive(true);
+        }
     }
 
     internal void StartDragging()

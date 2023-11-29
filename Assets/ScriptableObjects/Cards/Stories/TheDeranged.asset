@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dc921e383ea6eb4c926e6f6a5718aef, type: 3}
+  m_Name: TheDeranged
+  m_EditorClassIdentifier: 
+  StoryTitle: The Deranged
+  StoryDescription: Imprison your deck
+  StorySprite: {fileID: 21300000, guid: 6a2c5cdf1e148904ba6b8b0c533618e2, type: 3}
+  CardVO: 19
+  GoodRewards:
+  - {fileID: 11400000, guid: f317da8ac90bcb441a76487d2076ed5a, type: 2}
+  - {fileID: 11400000, guid: f317da8ac90bcb441a76487d2076ed5a, type: 2}
+  BadRewards:
+  - {fileID: 11400000, guid: f317da8ac90bcb441a76487d2076ed5a, type: 2}
+  - {fileID: 11400000, guid: f317da8ac90bcb441a76487d2076ed5a, type: 2}
+  Tombstone: {fileID: 11400000, guid: 0450d6c1eb07e9947bb01daf7fa8642c, type: 2}

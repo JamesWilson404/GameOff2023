@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,6 +13,8 @@ public class TooltipManager : MonoBehaviour
     bool selected;
     float selectedTime;
     GameObject lastSelected;
+
+    [SerializeField] GameObject Header;
 
     [SerializeField] TMP_Text CardTitle;
     [SerializeField] TMP_Text CardDescripton;
@@ -33,9 +36,17 @@ public class TooltipManager : MonoBehaviour
 
     private void Update()
     {
-        if (lastSelected == null)
+        if (lastSelected == null && selected)
         {
             selected = false;
+            if (Header.activeSelf)
+            {
+                CardUnHovered();
+            }
+            else
+            {
+                HandCardUnhovered();
+            }
         }
 
         if (selected)
@@ -63,14 +74,30 @@ public class TooltipManager : MonoBehaviour
         CardTitle.text = currentCard.CardName;
         CardDescripton.text = currentCard.CardDescription;
 
-        Painless.SetActive(currentCard.Keywords.Contains(eCardKeyword.Painless));
-        Forgetful.SetActive(currentCard.Keywords.Contains(eCardKeyword.Forgetful));
-        Cathartic.SetActive(currentCard.Keywords.Contains(eCardKeyword.Cathartic));
-        Power.SetActive(currentCard.Keywords.Contains(eCardKeyword.Power));
-        Resilience.SetActive(currentCard.Keywords.Contains(eCardKeyword.Resilience));
-        Story.SetActive(currentCard.Keywords.Contains(eCardKeyword.Story));
+        ShowKeywords(currentCard.Keywords);
 
+        Header.SetActive(true);
         lastSelected = card;
+    }
+
+    internal void CardHovered(StoryData currentStory, GameObject gameObject)
+    {
+        Header.SetActive(true);
+        selected = true;
+        CardTitle.text = currentStory.StoryTitle;
+        CardDescripton.text = currentStory.StoryDescription;
+
+        Story.SetActive(true);
+
+        lastSelected = gameObject;
+    }
+
+    public void HandCardHovered(List<eCardKeyword> keywords, GameObject gameObject)
+    {
+        Header.SetActive(false);
+        ShowKeywords(keywords);
+        selected = true;
+        lastSelected = gameObject;
     }
 
     public void CardUnHovered()
@@ -80,4 +107,31 @@ public class TooltipManager : MonoBehaviour
         lastSelected = null;
     }
 
+    public void HandCardUnhovered()
+    {
+        selected = false;
+        selectedTime = 0;
+        lastSelected = null;
+        ClearKeywords();
+    }
+
+    internal void ClearKeywords()
+    {
+        Painless.SetActive(false);
+        Forgetful.SetActive(false);
+        Cathartic.SetActive(false);
+        Power.SetActive(false);
+        Resilience.SetActive(false);
+        Story.SetActive(false);
+    }
+
+    internal void ShowKeywords(List<eCardKeyword> keywords)
+    {
+        Painless.SetActive(keywords.Contains(eCardKeyword.Painless));
+        Forgetful.SetActive(keywords.Contains(eCardKeyword.Forgetful));
+        Cathartic.SetActive(keywords.Contains(eCardKeyword.Cathartic));
+        Power.SetActive(keywords.Contains(eCardKeyword.Power));
+        Resilience.SetActive(keywords.Contains(eCardKeyword.Resilience));
+        Story.SetActive(keywords.Contains(eCardKeyword.Story));
+    }
 }

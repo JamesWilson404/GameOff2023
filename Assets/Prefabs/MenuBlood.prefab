@@ -269,7 +269,7 @@ MonoBehaviour:
   InDebug: 0
   minForce: 2
   maxForce: 10
-  minSize: 0.4
+  minSize: 0.2
   maxSize: 1.5
   CurrentSize: 0
   gravityMod: 0

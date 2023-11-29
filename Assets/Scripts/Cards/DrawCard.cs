@@ -13,4 +13,8 @@ public class DrawCard : Card
     {
         HandManager.Instance.DrawCard(cardToDraw);
     }
+
+    public override void OnDiscard()
+    {
+    }
 }

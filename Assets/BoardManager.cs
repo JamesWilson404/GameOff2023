@@ -28,6 +28,8 @@ public class BoardManager : MonoBehaviour
 
     public Card debugCard;
 
+    public eEventType CurrentEvent = eEventType.Shop;
+
     public Vector2Int DeckPosition;
     [SerializeField] Vector2Int[] AdjacencyLookup = new Vector2Int[]
     {
@@ -37,6 +39,7 @@ public class BoardManager : MonoBehaviour
         new Vector2Int(0, -1)
     };
 
+    public int BloodTileGenerated = 0;
 
     private void Awake()
     {
@@ -136,7 +139,43 @@ public class BoardManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.1f);
             var nextLocation = BoardManager.Instance.DeckPosition + item;
-            BoardManager.Instance.PlayCard(Tombstone, nextLocation);
+            if (!CardLookup.ContainsKey(nextLocation))
+            {
+                BoardManager.Instance.PlayCard(Tombstone, nextLocation);
+            }
+        }
+    }
+
+
+    internal void PlayBarsEffect()
+    {
+        StartCoroutine(BarsAroundDeck());
+    }
+
+    public IEnumerator BarsAroundDeck()
+    {
+
+        Vector2Int[] surroundingOffsets = new Vector2Int[]
+{
+            new Vector2Int(-1, 1),                         new Vector2Int(1, 1),
+            new Vector2Int(-1, 0),                         new Vector2Int(1, 0),
+            new Vector2Int(-1, -1),                        new Vector2Int(1, -1),
+
+            new Vector2Int(-3, 1),                         new Vector2Int(3, 1),
+            new Vector2Int(-3, 0),                         new Vector2Int(3, 0),
+            new Vector2Int(-3, -1),                        new Vector2Int(3, -1),
+};
+        var Tombstone = ((StoryData_Deranged)Game.Instance.CurrentStory).Tombstone;
+
+        foreach (var item in surroundingOffsets)
+        {
+            yield return new WaitForSeconds(0.1f);
+            var nextLocation = BoardManager.Instance.DeckPosition + item;
+
+            if (!CardLookup.ContainsKey(nextLocation))
+            {
+                BoardManager.Instance.PlayCard(Tombstone, nextLocation);
+            }
         }
     }
 
@@ -171,6 +210,7 @@ public class BoardManager : MonoBehaviour
             //  New Blood Tile
             BloodTiles.Add(position, card);
             card.RequiresBloodTrail = true;
+            BloodTileGenerated++;
         }
         CardLookup.Add(position, card);
     }
@@ -207,8 +247,9 @@ public class BoardManager : MonoBehaviour
 
     internal IEnumerator PresentShop()
     {
-
+        CurrentEvent = eEventType.Shop;
         Game.Instance.GameUI.LoadEventUI(eEventType.Shop);
+        var randVal = Game.Instance.rand.NextDouble();
         yield return new WaitForSeconds(1f);
         for (int i = -2; i < 3; i++)
         {
@@ -219,11 +260,74 @@ public class BoardManager : MonoBehaviour
 
             var placementPosition = GetCellCenter(DeckPosition + new Vector2Int(i, 0));
             var newShopCard = Instantiate(ShopCardPrefab, placementPosition, Quaternion.identity, ShopParent.transform);
-            newShopCard.GetComponent<UIEventCard>().Init(debugCard, DeckPosition + new Vector2Int(i, 0));
+
+            Card newCard = null;
+            if (randVal < 0.5)
+            {
+                newCard = Game.Instance.HopeCards[Game.Instance.rand.Next(Game.Instance.HopeCards.Length)];
+            }
+            else
+            {
+                newCard = Game.Instance.FearCards[Game.Instance.rand.Next(Game.Instance.FearCards.Length)];
+            }
+
+
+
+            newShopCard.GetComponent<UIEventCard>().Init(newCard, DeckPosition + new Vector2Int(i, 0));
             yield return new WaitForSeconds(0.2f);
 
         }
     }
+
+
+    internal IEnumerator PresentHopePick()
+    {
+        CurrentEvent = eEventType.GoodCardPick;
+        Game.Instance.GameUI.LoadEventUI(eEventType.GoodCardPick);
+        yield return new WaitForSeconds(1f);
+        for (int i = -1; i < 2; i++)
+        {
+            if (i == 0)
+            {
+                i++;
+            }
+
+            var placementPosition = GetCellCenter(DeckPosition + new Vector2Int(i, 0));
+            var newShopCard = Instantiate(ShopCardPrefab, placementPosition, Quaternion.identity, ShopParent.transform);
+
+            Card newCard = null;
+            newCard = Game.Instance.HopeCards[Game.Instance.rand.Next(Game.Instance.HopeCards.Length)];
+            newShopCard.GetComponent<UIEventCard>().Init(newCard, DeckPosition + new Vector2Int(i, 0));
+            yield return new WaitForSeconds(0.2f);
+
+        }
+    }
+
+    internal IEnumerator PresentFearPick()
+    {
+        CurrentEvent = eEventType.BadCardPick;
+        Game.Instance.GameUI.LoadEventUI(eEventType.BadCardPick);
+        yield return new WaitForSeconds(1f);
+        for (int i = -1; i < 2; i++)
+        {
+            if (i == 0)
+            {
+                i++;
+            }
+
+            var placementPosition = GetCellCenter(DeckPosition + new Vector2Int(i, 0));
+            var newShopCard = Instantiate(ShopCardPrefab, placementPosition, Quaternion.identity, ShopParent.transform);
+
+            Card newCard = null;
+            newCard = Game.Instance.FearCards[Game.Instance.rand.Next(Game.Instance.FearCards.Length)];
+            newShopCard.GetComponent<UIEventCard>().Init(newCard, DeckPosition + new Vector2Int(i, 0));
+            yield return new WaitForSeconds(0.2f);
+
+        }
+    }
+
+
+
 
     public void FinishEvent()
     {

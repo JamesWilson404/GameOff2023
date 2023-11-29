@@ -12,6 +12,7 @@ public abstract class UICard : MonoBehaviour
     public SpriteRenderer CardShadow;
     public SpriteRenderer CardBacking;
     public SpriteRenderer CardSprite;
+    public Collider2D collider2D;
 
     public Card CurrentCard;
 
@@ -27,6 +28,7 @@ public abstract class UICard : MonoBehaviour
     private void Awake()
     {
         AudioPlayer = GetComponent<AudioSource>();
+        collider2D = GetComponent<Collider2D>();
     }
 
     public void PlayPlacementAudio()
@@ -39,6 +41,8 @@ public abstract class UICard : MonoBehaviour
         CardShadow.enabled = v;
         CardBacking.enabled = v;
         CardSprite.enabled = v;
+        collider2D.enabled = v;
+
     }
 
 

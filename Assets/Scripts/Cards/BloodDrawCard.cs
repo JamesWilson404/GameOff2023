@@ -18,7 +18,9 @@ public class BloodDrawCard : Card
         {
             HandManager.Instance.DrawCard(1);
         }
+    }
 
-
+    public override void OnDiscard()
+    {
     }
 }
